@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yafeng.paperbackend.dao.BookMapper">
+<!--    <sql id="table">roommate</sql>-->
+<!--    <sql id="selectFields">name,sex,phone,age</sql>-->
+    <select id="selectAll" resultType="com.yafeng.paperbackend.entity.Book">
+        SELECT
+            *
+        FROM
+            book
+    </select>
+    <select id="selectOne" resultType="com.yafeng.paperbackend.entity.Book">
+        SELECT
+        *
+        FROM book
+        WHERE book_id = 78
+    </select>
+</mapper>
