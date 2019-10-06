@@ -1,5 +1,4 @@
 server:
-  #  port: 8081 #for Android
   port: 8082
 
 spring:
@@ -14,8 +13,8 @@ spring:
     time-zone: GMT+8
 
 mybatis:
-  config-location: classpath:mybatis-config.xml
-  mapper-locations: classpath:mybatis/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
 
 logging:
   level:

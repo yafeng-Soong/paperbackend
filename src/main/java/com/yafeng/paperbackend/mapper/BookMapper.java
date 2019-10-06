@@ -1,6 +1,6 @@
-package com.yafeng.paperbackend.dao;
+package com.yafeng.paperbackend.mapper;
 
-import com.yafeng.paperbackend.entity.Book;
+import com.yafeng.paperbackend.bean.entity.Book;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

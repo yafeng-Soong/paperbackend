@@ -1,9 +1,8 @@
-package com.yafeng.paperbackend.entity;
+package com.yafeng.paperbackend.bean.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 //import java.util.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
