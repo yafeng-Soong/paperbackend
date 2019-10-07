@@ -2,8 +2,16 @@ server:
   port: 8082
 
 spring:
+  redis:
+    database: 2
+    host: 114.115.175.199
+    port: 6380
+    password: 89652d7511b54
+    # 连接超时间
+    timeout: 2000
+    cache:
+      type: redis
   datasource:
-    #    url: jdbc:mysql://127.0.0.1:3306/book?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     url: jdbc:mysql://39.108.138.143:3306/book?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: fuck@you!
