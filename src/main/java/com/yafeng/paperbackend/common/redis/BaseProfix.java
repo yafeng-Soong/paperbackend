@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseProfix implements KeyProfix {
 
@@ -20,6 +19,11 @@ public abstract class BaseProfix implements KeyProfix {
 
     public BaseProfix(String prefix){
         this(EXPIRETIME, prefix);
+    }
+
+    public BaseProfix(){
+        this.expireSeconds = 0;
+        this.prefix = "base";
     }
 
     public int expireSeconds(){
