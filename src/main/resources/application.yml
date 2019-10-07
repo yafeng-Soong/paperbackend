@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     #    url: jdbc:mysql://127.0.0.1:3306/book?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    url: jdbc:mysql://39.108.138.143:3306/book?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://39.108.138.143:3306/tumo?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: fuck@you!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,5 +19,5 @@ mybatis:
 logging:
   level:
     #打印SQL信息
-    com.example.bookbackend.mapper: DEBUG
+    com.yafeng.paperbackend.mapper: DEBUG
 

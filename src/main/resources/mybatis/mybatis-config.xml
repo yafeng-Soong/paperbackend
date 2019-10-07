@@ -16,4 +16,7 @@
         <setting name="useGeneratedKeys" value="true"/>
     </settings>
     <!-- Continue going here -->
+    <typeAliases>
+        <package name="com.yafeng.paperbackend.bean.entity"/>
+    </typeAliases>
 </configuration>
