@@ -4,6 +4,8 @@ import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author : songyafeng
  * creat_time: 2019/10/7 17:16
  **/
+@Api(tags = "用户管理相关接口")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -28,6 +31,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @ApiOperation("用户注册接口")
     @PostMapping("/signUp")
     public ResponseEntity signUp(@RequestBody User user){
         ResponseEntity response = new ResponseEntity();

@@ -3,6 +3,8 @@ package com.yafeng.paperbackend.controller;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * project_name: paperbackend
@@ -23,12 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author : songyafeng
  * creat_time: 2019/10/7 0:17
  **/
+@Api(tags = "登录相关功能的接口")
 @RestController
 public class LoginController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping("/login")
+    @ApiOperation("用户登录")
     public ResponseEntity login(@RequestBody User user){
         ResponseEntity response = new ResponseEntity();
         Subject subject = SecurityUtils.getSubject();
@@ -57,8 +62,10 @@ public class LoginController {
         }
     }
 
+    @ApiIgnore
     @GetMapping("/sayHello")
     public String sayHello(){
+        //只是一个测试接口
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         return "(✿✪‿✪｡)ﾉｺﾝﾁｬ♡，" + username + "当你看到这条消息表示你已经登陆了哦!";
     }
@@ -67,6 +74,7 @@ public class LoginController {
      * 退出登录，实质上是去掉session
      * @return
      */
+    @ApiOperation("退出登录接口")
     @GetMapping("/logout")
     public String logout(){
         SecurityUtils.getSubject().logout();
