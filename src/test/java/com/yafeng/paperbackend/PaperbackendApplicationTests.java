@@ -1,7 +1,7 @@
 package com.yafeng.paperbackend;
 
-import com.yafeng.paperbackend.dao.BookMapper;
-import com.yafeng.paperbackend.entity.Book;
+import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.mapper.UserMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,15 @@ import java.util.List;
 @SpringBootTest
 public class PaperbackendApplicationTests {
     @Autowired
-    BookMapper bookMapper;
+    UserMapper userMapper;
 
     @Test
     public void contextLoads() {
-        Book b = bookMapper.selectOne();
-        System.out.println(b.getName());
-        List<Book> books = bookMapper.selectAll();
-        for (Book book : books)
-            System.out.println(book.toString());
+        User query = new User();
+        query.setEmail("233333@qq.com");
+        List<User> users = userMapper.selectList(query);
+        for (User user : users)
+            System.out.println(user.toString());
     }
 
 }
