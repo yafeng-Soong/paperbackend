@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.controller;
 
+import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户管理相关接口")
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired

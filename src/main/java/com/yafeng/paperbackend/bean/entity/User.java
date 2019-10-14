@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * project_name: paperbackend
  * package: com.yafeng.paperbackend.bean.entity
@@ -15,11 +17,12 @@ import lombok.Data;
 @Data
 public class User {
     private Integer id;
-    @ApiModelProperty(value = "用户名，注册时必填")
     private String username;
-    @ApiModelProperty(value = "密码，注册必填")
     private String password;
     private String salt;
-    @ApiModelProperty(value = "邮箱，注册时必填")
     private String email;
+    private int state;
+    private String avatar;
+    private BigDecimal cash;
+    private String role;
 }

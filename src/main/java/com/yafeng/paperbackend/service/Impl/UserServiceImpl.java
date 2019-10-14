@@ -61,4 +61,17 @@ public class UserServiceImpl implements UserService {
     public int delete(User query) {
         return userMapper.delete(query);
     }
+
+    /**
+     * 更新头像路径
+     * @param user
+     * @return
+     */
+    @Override
+    public int updateAvatar(User user){
+        User update = new User();
+        update.setAvatar(user.getAvatar());
+        update.setEmail(user.getEmail());
+        return userMapper.update(update);
+    }
 }

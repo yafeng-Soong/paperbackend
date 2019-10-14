@@ -100,7 +100,7 @@ public class ShiroConfig {
         //静态资源不需要认证
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/imgs/**", "anon");
-        filterChainDefinitionMap.put("files/**", "anon");
+        filterChainDefinitionMap.put("/files/**", "anon");
         //filterChainDefinitionMap.put("/login", "anon");
         //filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/login", "anon");//登录不需要认证，但退出登录要认证防止未认证用户把已登录用户退出

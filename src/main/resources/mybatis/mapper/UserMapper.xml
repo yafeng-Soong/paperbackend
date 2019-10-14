@@ -6,19 +6,19 @@
     <select id="countAll" resultType="User">
         SELECT
             COUNT(0)
-        FROM tb_user
+        FROM user
     </select>
 
     <select id="selectAll" resultType="User">
         SELECT
             *
-        FROM tb_user
+        FROM user
     </select>
 
     <select id="selectList" resultType="User">
         SELECT 
             *
-        FROM tb_user
+        FROM user
         WHERE 
         <if test="email != null">
             email = #{email}
@@ -31,13 +31,13 @@
     <select id="selectByEmail" parameterType="String" resultType="User">
         SELECT
             *
-        FROM tb_user
+        FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="insert" parameterType="User" keyProperty="id">
         INSERT INTO
-        tb_user(
+        user(
             username,
             email,
             password,
@@ -52,7 +52,7 @@
     </insert>
 
     <update id="update" parameterType="User">
-        UPDATE tb_user
+        UPDATE user
         <set>
             <if test="username != null and username != ''">
                 username = #{username}
@@ -60,13 +60,22 @@
             <if test="password != null and password != ''">
                 password = #{password}
             </if>
+            <if test="salt != null and salt !=''">
+                salt = #{salt}
+            </if>
+            <if test="avatar != null and avatar !=''">
+                avatar = #{avatar}
+            </if>
+            <if test="state != null and state !=''">
+                state = #{state}
+            </if>
         </set>
         WHERE email = #{email}
     </update>
 
     <delete id="delete" parameterType="User">
         DELETE FROM
-            tb_user
+            user
         WHERE email = #{email}
     </delete>
 

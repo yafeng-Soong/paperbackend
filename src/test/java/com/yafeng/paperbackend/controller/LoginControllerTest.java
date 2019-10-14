@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
 
 import static org.junit.Assert.*;
 
@@ -27,8 +30,8 @@ import static org.junit.Assert.*;
 public class LoginControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginControllerTest.class);
-    @Autowired
-    UserMapper userMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     UserService userService;
 
@@ -37,11 +40,9 @@ public class LoginControllerTest {
         User user = new User();
         user.setEmail("397655952@qq.com");
         user.setUsername("峰酱");
-        user.setPassword("123456");
-        PasswordHelper helper = new PasswordHelper();
-        helper.encryptPassword(user);
+        user.setPassword("gta123456");
         LOGGER.info("user's new password:" + user.getPassword());
-        LOGGER.info("" + userMapper.insert(user));
+        LOGGER.info("" + userService.insert(user));
         LOGGER.info("" + user.getId());
     }
 
@@ -51,14 +52,21 @@ public class LoginControllerTest {
         user.setEmail("397655952@qq.com");
         user.setUsername("阿峰");
         insertUser();
-        userMapper.update(user);
+        userService.update(user);
     }
 
     @Test
     public void deleteUser(){
         User user = new User();
         user.setEmail("397655952@qq.com");
-        userMapper.delete(user);
+        userService.delete(user);
+    }
+
+    @Test
+    public void redisTest(){
+        redisTemplate.opsForValue().set("test", 1);
+        int test = (int) redisTemplate.opsForValue().get("test");
+        System.out.println(test);
     }
 
 }

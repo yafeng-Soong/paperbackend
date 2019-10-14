@@ -47,10 +47,10 @@ public class UserRealm extends AuthorizingRealm {
         //Http请求时会进入这里
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         User user = userService.selectByEmail(token.getUsername());
-        if (user == null) {
-            LOGGER.error("系统中不存在用户：" + token.getUsername());
-            return null;
-        }
+        if (user == null)
+            throw new UnknownAccountException();
+        if (user.getState() == 0)
+            throw new DisabledAccountException();
         return new SimpleAuthenticationInfo(
                 user.getEmail(),
                 user.getPassword(),
