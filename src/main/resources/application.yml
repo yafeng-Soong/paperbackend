@@ -13,15 +13,39 @@ spring:
     port: 6379
     password: fuck@you
     timeout: 5000
-    jedis:
-      pool:
-        max-active: 5
-        max-wait: -1
-        max-idle: 4
-        min-idle: 0
+    database: 2
+    # rabbitmq 服务器信息配置
+  rabbitmq:
+    host: 114.115.175.199
+    port: 5672
+    username: admin
+    password: 734190426l
+    publisherConfirms: true
+    # rabbitmq是多租户系统 virtualhost 用于资源的逻辑分组和分离
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 10
+        # 消费者未能及时处理的最大消息数量
+        prefetch: 1
+        # 在启动时 自动启动相关
+        auto-startup: true
+        # 在消息消费失败的情况下，是否重新入队 Whether rejected deliveries are re-queued by default.
+        default-requeue-rejected: true
+    # 重试机制
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000
+        # 最大重试次数
+        max-attempts: 3
+        max-interval: 10000
+        multiplier: 1.0
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml

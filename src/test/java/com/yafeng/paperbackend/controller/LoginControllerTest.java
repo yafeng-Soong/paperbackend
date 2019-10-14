@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -30,8 +29,8 @@ import static org.junit.Assert.*;
 public class LoginControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginControllerTest.class);
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+//    @Resource
+//    private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     UserService userService;
 
@@ -62,11 +61,11 @@ public class LoginControllerTest {
         userService.delete(user);
     }
 
-    @Test
-    public void redisTest(){
-        redisTemplate.opsForValue().set("test", 1);
-        int test = (int) redisTemplate.opsForValue().get("test");
-        System.out.println(test);
-    }
+//    @Test
+//    public void redisTest(){
+//        redisTemplate.opsForValue().set("test", 1);
+//        int test = (int) redisTemplate.opsForValue().get("test");
+//        System.out.println(test);
+//    }
 
 }
