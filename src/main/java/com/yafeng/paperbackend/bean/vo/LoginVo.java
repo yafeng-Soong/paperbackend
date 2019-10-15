@@ -1,6 +1,6 @@
 package com.yafeng.paperbackend.bean.vo;
 
-import com.yafeng.paperbackend.utils.RegexpConstant;
+import com.yafeng.paperbackend.utils.RegexpUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,10 +24,10 @@ public class LoginVo {
      */
     @ApiModelProperty(value = "登录邮箱", required = true)
     @NotNull(message = "邮箱字段不能为空")
-    @Pattern(regexp = RegexpConstant.REG_EMAIL, message = "请输入正确格式的邮箱")
+    @Pattern(regexp = RegexpUtil.REG_EMAIL, message = "请输入正确格式的邮箱")
     private String email;
     @ApiModelProperty(value = "登录密码", required = true)
     @NotNull(message = "密码字段不能为空")
-    @Pattern(regexp = RegexpConstant.REG_PASSWORD, message = "请输入6~10位的数字和字母组合的密码")
+    @Pattern(regexp = RegexpUtil.REG_PASSWORD, message = "请输入6~10位的数字和字母组合的密码")
     private String password;
 }

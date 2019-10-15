@@ -38,4 +38,9 @@ public class ResponseEntity<T> implements Serializable {
         this.code = ResponseEnums.ERROR.getCode();
         this.msg = e.getMessage();
     }
+
+    public void setErrorResponse(){
+        code = ResponseEnums.ERROR.getCode();
+        msg = ResponseEnums.ERROR.getMsg();
+    }
 }

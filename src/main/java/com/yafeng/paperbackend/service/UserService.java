@@ -33,4 +33,12 @@ public interface UserService extends BaseService<User> {
      * @return
      */
     int activateUser(String email);
+
+    /**
+     * 修改密码
+     * @param email
+     * @param password
+     * @return
+     */
+    int resetPassword(String email, String password);
 }

@@ -55,16 +55,16 @@
         UPDATE user
         <set>
             <if test="username != null and username != ''">
-                username = #{username}
+                username = #{username},
             </if>
             <if test="password != null and password != ''">
-                password = #{password}
+                password = #{password},
             </if>
             <if test="salt != null and salt !=''">
-                salt = #{salt}
+                salt = #{salt},
             </if>
             <if test="avatar != null and avatar !=''">
-                avatar = #{avatar}
+                avatar = #{avatar},
             </if>
             <if test="state != null and state !=''">
                 state = #{state}

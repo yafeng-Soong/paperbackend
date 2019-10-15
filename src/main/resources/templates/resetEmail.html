@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>重置密码</title>
+</head>
+<body>
+你好！
+请点击链接进行重置：
+<!--/*@thymesVar id="email" type="String"*/-->
+<!--/*@thymesVar id="token" type="String"*/-->
+<a href="#" th:href="@{http://39.108.138.143:8082/user/resetPage(email=${email}, token=${token})}">click me</a>。
+若不是您本人的操作请忽略该邮件。
+</body>
+</html>

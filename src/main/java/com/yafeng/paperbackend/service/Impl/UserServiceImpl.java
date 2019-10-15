@@ -4,9 +4,11 @@ import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.mapper.UserMapper;
 import com.yafeng.paperbackend.service.UserService;
 import com.yafeng.paperbackend.utils.PasswordHelper;
+import com.yafeng.paperbackend.utils.RegexpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.List;
 
 /**
@@ -81,5 +83,17 @@ public class UserServiceImpl implements UserService {
         update.setEmail(email);
         update.setState(1);
         return userMapper.update(update);
+    }
+
+    @Override
+    public int resetPassword(String email, String password) {
+        if (!RegexpUtil.passwordMatcher(password))
+            return -1;
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        PasswordHelper helper = new PasswordHelper();
+        helper.encryptPassword(user);
+        return userMapper.update(user);
     }
 }

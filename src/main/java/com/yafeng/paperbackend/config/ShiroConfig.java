@@ -108,6 +108,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/user/signUp", "anon");
         filterChainDefinitionMap.put("/user/activate", "anon");
+        filterChainDefinitionMap.put("/user/resetPassword", "anon");
+        filterChainDefinitionMap.put("/user/resetPage", "anon");
         //swagger相关路径，太多了感觉是个坑
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
