@@ -96,7 +96,9 @@ public class LoginController extends BaseController {
     @ApiOperation("退出登录接口")
     @GetMapping("/logout")
     public String logout(){
-        SecurityUtils.getSubject().logout();
+        Subject subject = SecurityUtils.getSubject();
+        subject.getSession().removeAttribute("currentUser");
+        subject.logout();
         return "您已经退出登录！";
     }
 }

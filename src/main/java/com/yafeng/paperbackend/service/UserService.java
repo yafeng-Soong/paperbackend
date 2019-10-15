@@ -13,6 +13,24 @@ import org.springframework.stereotype.Service;
  * creat_time: 2019/10/6 20:13
  **/
 public interface UserService extends BaseService<User> {
+    /**
+     * 通过邮箱查找
+     * @param email
+     * @return
+     */
     User selectByEmail(String email);
+
+    /**
+     * 修改头像
+     * @param user
+     * @return
+     */
     int updateAvatar(User user);
+
+    /**
+     * 激活账户
+     * @param email
+     * @return
+     */
+    int activateUser(String email);
 }

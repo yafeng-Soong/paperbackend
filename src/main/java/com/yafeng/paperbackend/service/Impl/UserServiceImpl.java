@@ -74,4 +74,12 @@ public class UserServiceImpl implements UserService {
         update.setEmail(user.getEmail());
         return userMapper.update(update);
     }
+
+    @Override
+    public int activateUser(String email) {
+        User update = new User();
+        update.setEmail(email);
+        update.setState(1);
+        return userMapper.update(update);
+    }
 }
