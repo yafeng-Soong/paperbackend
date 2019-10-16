@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(User entity) {
+        entity.setUsername((countAll() + 1) + "号用户");
         //先对user的密码进行哈希散列
         PasswordHelper helper = new PasswordHelper();
         helper.encryptPassword(entity);

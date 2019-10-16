@@ -3,7 +3,7 @@ package com.yafeng.paperbackend.controller;
 import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
-import com.yafeng.paperbackend.bean.vo.LoginVo;
+import com.yafeng.paperbackend.bean.vo.RegisterAndLoginVo;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.UserService;
 import io.swagger.annotations.Api;
@@ -44,7 +44,7 @@ public class LoginController extends BaseController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public ResponseEntity login(@RequestBody @Valid LoginVo user, BindingResult bindingResult){
+    public ResponseEntity login(@RequestBody @Valid RegisterAndLoginVo user, BindingResult bindingResult){
         ResponseEntity response = new ResponseEntity();
         if (validateParams(response, bindingResult)) {
             return response;

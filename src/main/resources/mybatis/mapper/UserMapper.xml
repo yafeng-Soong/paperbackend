@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yafeng.paperbackend.mapper.UserMapper">
 
-    <select id="countAll" resultType="User">
+    <select id="countAll" resultType="java.lang.Integer">
         SELECT
             COUNT(0)
         FROM user
@@ -67,7 +67,13 @@
                 avatar = #{avatar},
             </if>
             <if test="state != null and state !=''">
-                state = #{state}
+                state = #{state},
+            </if>
+            <if test="sex != null and sex !=''">
+                sex = #{sex},
+            </if>
+            <if test="signature != null and signature !=''">
+                signature = #{signature}
             </if>
         </set>
         WHERE email = #{email}

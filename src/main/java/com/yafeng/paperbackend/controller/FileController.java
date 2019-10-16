@@ -5,6 +5,9 @@ import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -25,6 +28,7 @@ import java.util.List;
  * @author : songyafeng
  * creat_time: 2019/10/14 0:03
  **/
+@Api(tags = "文件上传模块接口")
 @RestController
 @RequestMapping("/upload")
 public class FileController extends BaseController {
@@ -41,6 +45,8 @@ public class FileController extends BaseController {
     @Autowired
     UserService userService;
 
+    @ApiOperation("上传用户头像接口")
+    @ApiImplicitParam(name = "img", value = "图片文件", required = true)
     @PostMapping("/header")
     public ResponseEntity uploadHeader(@RequestParam("img") MultipartFile img){
         ResponseEntity response = new ResponseEntity();

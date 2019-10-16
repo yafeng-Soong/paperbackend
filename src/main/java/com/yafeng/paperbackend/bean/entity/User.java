@@ -25,4 +25,6 @@ public class User {
     private String avatar;
     private BigDecimal cash;
     private String role;
+    private boolean sex;
+    private String signature;
 }
