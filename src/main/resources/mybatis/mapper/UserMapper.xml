@@ -19,13 +19,17 @@
         SELECT 
             *
         FROM user
-        WHERE 
-        <if test="email != null">
-            email = #{email}
-        </if>
-        <if test="username != null">
-            AND username = #{username}
-        </if>
+        <where>
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
+            <if test="username != null and email != ''">
+                AND username = #{username}
+            </if>
+            <if test="sex !=null">
+                AND sex = #{sex}
+            </if>
+        </where>
     </select>
 
     <select id="selectByEmail" parameterType="String" resultType="User">

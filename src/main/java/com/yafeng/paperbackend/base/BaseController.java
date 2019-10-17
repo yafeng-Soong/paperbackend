@@ -1,7 +1,9 @@
 package com.yafeng.paperbackend.base;
 
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
+import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -35,5 +37,13 @@ public abstract class BaseController {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 返回当前登录用户信息
+     * @return
+     */
+    protected User getCurrentUser(){
+        return (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
     }
 }

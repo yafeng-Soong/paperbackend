@@ -70,6 +70,12 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
 
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true # 若超过最大页数或页数小于0也会返回数据
+  support-methods-arguments: true
+  params: count=countsql
+
 logging:
   level:
     #打印SQL信息

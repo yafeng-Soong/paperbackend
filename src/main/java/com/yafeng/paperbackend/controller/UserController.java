@@ -1,9 +1,13 @@
 package com.yafeng.paperbackend.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.RegisterAndLoginVo;
+import com.yafeng.paperbackend.bean.vo.user.UserQueryVo;
 import com.yafeng.paperbackend.bean.vo.user.UserUpdateVo;
 import com.yafeng.paperbackend.config.Redis.UserKeyProfix;
 import com.yafeng.paperbackend.enums.ResponseEnums;
@@ -18,6 +22,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.SendFailedException;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * project_name: paperbackend
@@ -87,13 +93,27 @@ public class UserController extends BaseController {
         user.setUsername(updateVo.getUsername());
         user.setSignature(updateVo.getSignature());
         user.setSex(updateVo.getSex());
-        Subject subject = SecurityUtils.getSubject();
-        User currentUser = (User) subject.getSession().getAttribute("currentUser");
+        User currentUser = getCurrentUser();
         user.setEmail(currentUser.getEmail());
         if (userService.update(user) == 0){
             response.setErrorResponse();
             response.setData("更新失败");
         }
+        return response;
+    }
+
+    @ApiOperation("按条件查询用户分页列表")
+    @PostMapping("/selectPageList")
+    public ResponseEntity selectPageList(@RequestBody @Valid UserQueryVo queryVo, BindingResult bindingResult){
+        ResponseEntity response = new ResponseEntity();
+        if (validateParams(response, bindingResult))
+            return response;
+        //设置起始页和分页大小
+        Page<User> page = PageHelper.startPage(queryVo.getPageNum(), queryVo.getPageSize());
+        User query = new User();
+        BeanUtils.copyProperties(queryVo, query);
+        List<User> userList = userService.selectList(query);
+        response.setData(new PageResponseVo<>(userList, page));
         return response;
     }
 

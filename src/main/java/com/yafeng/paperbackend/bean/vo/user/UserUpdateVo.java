@@ -19,9 +19,9 @@ public class UserUpdateVo {
     @ApiModelProperty(value = "修改后的简介")
     private String signature;
     @ApiModelProperty(value = "修改后的性别")
-    private boolean sex;
+    private Integer sex;
 
-    public boolean getSex(){
+    public Integer getSex(){
         return sex;
     }
 }
