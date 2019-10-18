@@ -7,7 +7,7 @@ package com.yafeng.paperbackend.config.Redis;
  * @date 2019/10/7 20:53
  * @version 1.0.0
  */
-public interface KeyProfix {
+public interface KeyPrefix {
     /**
      * getExpireSecond
      * @description 返回键值对得存活时间

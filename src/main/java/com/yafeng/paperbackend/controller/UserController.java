@@ -9,7 +9,7 @@ import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.RegisterAndLoginVo;
 import com.yafeng.paperbackend.bean.vo.user.UserQueryVo;
 import com.yafeng.paperbackend.bean.vo.user.UserUpdateVo;
-import com.yafeng.paperbackend.config.Redis.UserKeyProfix;
+import com.yafeng.paperbackend.config.Redis.UserKeyPrefix;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.EmailService;
 import com.yafeng.paperbackend.service.RedisService;
@@ -18,8 +18,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -125,7 +123,7 @@ public class UserController extends BaseController {
     })
     public ResponseEntity activate(@RequestParam("email") String email, @RequestParam("token") String token){
         ResponseEntity response = new ResponseEntity();
-        String storedEmail = redisService.get(UserKeyProfix.TOKEN, token, String.class);
+        String storedEmail = redisService.get(UserKeyPrefix.TOKEN, token, String.class);
         if (storedEmail == null || !storedEmail.equals(email)){
             response.setErrorResponse();
             response.setData("激活链接已过期");
@@ -134,7 +132,7 @@ public class UserController extends BaseController {
             response.setData("激活失败");
         }else{
             //激活后删掉redis中的链接
-            redisService.delete(UserKeyProfix.TOKEN, token);
+            redisService.delete(UserKeyPrefix.TOKEN, token);
             response.setData("激活成功");
         }
         return response;
@@ -190,7 +188,7 @@ public class UserController extends BaseController {
                                         @RequestParam("password") String password,
                                         @RequestParam("token") String token){
         ResponseEntity response = new ResponseEntity();
-        String storedEmail = redisService.get(UserKeyProfix.TOKEN, token, String.class);
+        String storedEmail = redisService.get(UserKeyPrefix.TOKEN, token, String.class);
         if (storedEmail == null || !storedEmail.equals(email)){
             response.setErrorResponse();
             response.setData("重置密码链接已过期");
@@ -203,7 +201,7 @@ public class UserController extends BaseController {
                 response.setErrorResponse();
                 response.setData("重置密码失败");
             }else {
-                redisService.delete(UserKeyProfix.TOKEN, token);
+                redisService.delete(UserKeyPrefix.TOKEN, token);
                 response.setData("重置密码成功");
             }
         }

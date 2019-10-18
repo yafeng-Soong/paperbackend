@@ -1,6 +1,6 @@
 package com.yafeng.paperbackend.service;
 
-import com.yafeng.paperbackend.config.Redis.UserKeyProfix;
+import com.yafeng.paperbackend.config.Redis.UserKeyPrefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -78,7 +78,7 @@ public class EmailService {
             context.setVariable("email", email);
             //生成UUID作为tmpKey
             String token = UUID.randomUUID().toString().replaceAll("-", "");
-            redisService.set(UserKeyProfix.TOKEN, token, email);
+            redisService.set(UserKeyPrefix.TOKEN, token, email);
             context.setVariable("token", token);
             //指定template模板
             String emailContent = templateEngine.process(template, context);

@@ -1,12 +1,12 @@
 package com.yafeng.paperbackend.base;
 
-import com.yafeng.paperbackend.config.Redis.KeyProfix;
+import com.yafeng.paperbackend.config.Redis.KeyPrefix;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public abstract class BaseProfix implements KeyProfix {
+public abstract class BasePrefix implements KeyPrefix {
 
     // 设置存活期为一天
     private static final Integer EXPIRETIME = 3600 * 24;
@@ -17,11 +17,11 @@ public abstract class BaseProfix implements KeyProfix {
     // 给键值对加上特定的前缀 防止错误覆盖
     private String prefix;
 
-    public BaseProfix(String prefix){
+    public BasePrefix(String prefix){
         this(EXPIRETIME, prefix);
     }
 
-    public BaseProfix(){
+    public BasePrefix(){
         this.expireSeconds = 0;
         this.prefix = "base";
     }

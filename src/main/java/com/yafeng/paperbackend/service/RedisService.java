@@ -1,7 +1,7 @@
 package com.yafeng.paperbackend.service;
 
 import com.google.gson.Gson;
-import com.yafeng.paperbackend.config.Redis.KeyProfix;
+import com.yafeng.paperbackend.config.Redis.KeyPrefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,11 +26,11 @@ public class RedisService {
      * @date 2019/7/7 16:15
      * @version 1.0.0
      */
-    public <T> T get(KeyProfix keyProfix, String key, Class<? extends T> clazz ){
+    public <T> T get(KeyPrefix keyPrefix, String key, Class<? extends T> clazz ){
         Jedis jedis = null;
         try{
             jedis = jedisPool.getResource();
-            key = keyProfix.prefix() + key;
+            key = keyPrefix.prefix() + key;
             String str = jedis.get(key);
             T t = stringToBean(str, clazz);
             return t;
@@ -41,7 +41,7 @@ public class RedisService {
 
     }
 
-    public <T> boolean set(KeyProfix keyProfix, String key, T value){
+    public <T> boolean set(KeyPrefix keyPrefix, String key, T value){
         Jedis jedis = null;
         try{
             jedis = jedisPool.getResource();
@@ -49,8 +49,8 @@ public class RedisService {
             if (StringUtils.isEmpty(str)){
                 return false;
             }
-            key = keyProfix.prefix() + key;
-            int seconds = keyProfix.expireSeconds();
+            key = keyPrefix.prefix() + key;
+            int seconds = keyPrefix.expireSeconds();
             if (seconds <= 0){
                 jedis.set(key, str);
             }else {
@@ -63,11 +63,11 @@ public class RedisService {
         }
     }
 
-    public boolean delete(KeyProfix keyProfix, String key){
+    public boolean delete(KeyPrefix keyPrefix, String key){
         Jedis jedis = null;
         try{
             jedis = jedisPool.getResource();
-            key = keyProfix.prefix() + key;
+            key = keyPrefix.prefix() + key;
             long ret = jedis.del(key);
             return ret > 0;
         }
@@ -76,11 +76,11 @@ public class RedisService {
         }
     }
 
-    public long incr(KeyProfix keyProfix, String key){
+    public long incr(KeyPrefix keyPrefix, String key){
         Jedis jedis = null;
         try{
             jedis = jedisPool.getResource();
-            key = keyProfix.prefix() + key;
+            key = keyPrefix.prefix() + key;
             return jedis.incr(key);
 
         }finally {
@@ -88,11 +88,11 @@ public class RedisService {
         }
     }
 
-    public long decr(KeyProfix keyProfix, String key){
+    public long decr(KeyPrefix keyPrefix, String key){
         Jedis jedis = null;
         try{
             jedis = jedisPool.getResource();
-            key = keyProfix.prefix() + key;
+            key = keyPrefix.prefix() + key;
             return jedis.decr(key);
 
         }finally {
@@ -123,7 +123,7 @@ public class RedisService {
 
     }
 
-    public <T> boolean exists(KeyProfix prefix, String key) {
+    public <T> boolean exists(KeyPrefix prefix, String key) {
         Jedis jedis = null;
         try {
             jedis =  jedisPool.getResource();
