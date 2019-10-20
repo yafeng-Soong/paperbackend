@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.config;
 
+import com.yafeng.paperbackend.config.filter.ShiroRoleFilter;
 import com.yafeng.paperbackend.config.filter.ShiroUserFilter;
 import com.yafeng.paperbackend.realm.UserRealm;
 import com.yafeng.paperbackend.utils.PasswordHelper;
@@ -91,6 +92,7 @@ public class ShiroConfig {
         */
         //设置过滤器，主要解决跨域中的option请求
         Map<String, Filter> filter = new HashMap<>();
+        filter.put("roles", new ShiroRoleFilter());
         filter.put("authc", new ShiroUserFilter());
         shiroFilterFactoryBean.setFilters(filter);
 
@@ -117,6 +119,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
         filterChainDefinitionMap.put("/configuration/security", "anon");
         filterChainDefinitionMap.put("/configuration/ui", "anon");
+        //下面是需要角色权限的路径，暂时设置一个测试用的，具体是否要引进角色管理后面再说
+        filterChainDefinitionMap.put("/user/selectPageList", "authc,roles[admin]");
 
         filterChainDefinitionMap.put("/**", "authc");
 

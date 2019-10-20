@@ -4,6 +4,7 @@ import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -32,7 +33,11 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        String email = (String) principalCollection.getPrimaryPrincipal();
+        User user = userService.selectByEmail(email);
+        info.addRole(user.getRole());
+        return info;
     }
 
     /**

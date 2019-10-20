@@ -4,6 +4,7 @@ import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.RegisterAndLoginVo;
+import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.UserService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,7 +58,10 @@ public class LoginController extends BaseController {
             User currentUser = userService.selectByEmail(user.getEmail());
             subject.getSession().setAttribute("currentUser", currentUser);
             //设置session过期时间为3天
-            //subject.getSession().setTimeout(259200000);
+            subject.getSession().setTimeout(259200000);
+            UserResponseVo responseVo = new UserResponseVo();
+            BeanUtils.copyProperties(currentUser, responseVo);
+            response.setData(responseVo);
             //subject.getSession().setTimeout(10000);
             //if (subject.isAuthenticated())
                 //return response;
