@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -10,6 +11,8 @@ import lombok.Getter;
  * @author : songyafeng
  * creat_time: 2019/10/6 23:11
  **/
+@Getter
+@AllArgsConstructor
 public enum ResponseEnums {
     SUCCESS(200, "操作成功"),
     LOGIN_SUCCESS(201, "登录成功"),
