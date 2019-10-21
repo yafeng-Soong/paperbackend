@@ -1,0 +1,41 @@
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator/config.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+<!--        生成实体类的位置-->
+        <javaModelGenerator targetPackage="com.yafeng.paperbackend.bean.entity"
+                            targetProject="src/main/java"/>
+
+<!--        xml-->
+        <sqlMapGenerator targetPackage="mybatis.mapper"
+                         targetProject="src/main/resources"/>
+<!--        mapper-->
+        <javaClientGenerator targetPackage="com.yafeng.paperbackend.mapper"
+                             targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <table schema="paper" tableName="${tableName}">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>

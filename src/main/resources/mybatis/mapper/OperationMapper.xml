@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yafeng.paperbackend.mapper.OperationMapper">
+  <resultMap id="BaseResultMap" type="com.yafeng.paperbackend.bean.entity.Operation">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="operator_id" jdbcType="INTEGER" property="operatorId" />
+    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+  </resultMap>
+
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+       select id, operator_id, paper_id, type, create_time, note from operation where operator_id=#{userId}
+  </select>
+
+</mapper>

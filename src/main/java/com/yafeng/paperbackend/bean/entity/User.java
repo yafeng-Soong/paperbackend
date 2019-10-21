@@ -1,7 +1,6 @@
 package com.yafeng.paperbackend.bean.entity;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
