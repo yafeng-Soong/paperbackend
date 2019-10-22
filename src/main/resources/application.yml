@@ -50,7 +50,7 @@ spring:
     protocol: smtp
     host: smtp.qq.com
     username: 397655952@qq.com
-    password: trqzegrtgygzbghf
+    password: lmlezjwnigjbcbcg
     default-encoding: utf-8
     properties:
       mail:

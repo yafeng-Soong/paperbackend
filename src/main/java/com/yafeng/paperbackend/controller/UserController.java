@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -40,6 +41,7 @@ import java.util.List;
  * creat_time: 2019/10/7 17:16
  **/
 @Api(tags = "用户管理相关接口")
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -70,7 +72,7 @@ public class UserController extends BaseController {
         }catch (DuplicateKeyException e){
             response.setErrorResponse();
             response.setData("注册失败," + registerVo.getEmail() + "邮箱已被注册");
-            LOGGER.error("邮箱被注册：" + e.getMessage());
+            log.error("邮箱被注册：" + e.getMessage());
         }catch (SendFailedException e){
             response.setErrorResponse();
             response.setData("注册失败,无效邮箱");
