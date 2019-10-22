@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yafeng.paperbackend.mapper.PaperMapper">
+  <resultMap id="BaseResultMap" type="com.yafeng.paperbackend.bean.entity.Paper">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="publisher_email" jdbcType="VARCHAR" property="publisherEmail" />
+    <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+    <result column="check_status" jdbcType="TINYINT" property="checkStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="selectByPublisherEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
+        from paper where publisher_email=#{email}
+  </select>
+
+
+  <select id="selectByPublisherEmailAndStatus" resultMap="BaseResultMap">
+        select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
+        from paper where publisher_email=#{email} and pay_status=#{payStatus} and check_status=#{checkStatus}
+  </select>
+
+
+</mapper>

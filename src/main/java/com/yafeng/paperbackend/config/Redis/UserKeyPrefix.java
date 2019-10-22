@@ -2,6 +2,7 @@ package com.yafeng.paperbackend.config.Redis;
 
 import com.yafeng.paperbackend.base.BasePrefix;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author liugaoyang
@@ -9,6 +10,7 @@ import lombok.Data;
  * @description redis中用户前缀
  * @date 2019/10/14 20:11
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserKeyPrefix extends BasePrefix {
 

@@ -4,6 +4,7 @@ import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * project_name: paperbackend
@@ -12,6 +13,7 @@ import lombok.Data;
  * @author : songyafeng
  * creat_time: 2019/10/17 15:59
  **/
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel("用户类分页查询Vo")
 public class UserQueryVo extends PageQueryVo {

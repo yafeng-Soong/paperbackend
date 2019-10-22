@@ -1,7 +1,6 @@
 package com.yafeng.paperbackend.config.Redis;
 
-import com.yafeng.paperbackend.base.BaseProfix;
-import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.base.BasePrefix;
 import com.yafeng.paperbackend.service.RedisService;
 import com.yafeng.paperbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ public class RedisServiceTest {
      */
     @Test
     public void testConnectionRedis(){
-        BaseProfix profix = new BaseProfix() {
+        BasePrefix profix = new BasePrefix() {
             @Override
             public int expireSeconds() {
                 return 0;
@@ -53,9 +52,13 @@ public class RedisServiceTest {
 
     @Test
     public void testSetAndGet(){
-        User user = userService.selectByEmail("397655952@qq.com");
-        redisService.set(UserKeyProfix.Name, user.getSalt(), user);
-        log.info("测试get和set方法{}", redisService.get(UserKeyProfix.Name, user.getSalt(), User.class));
+        String token = "60e949eb7b294c118ac2d7a3a94ac27d";
+        String storedEmail = redisService.get(UserKeyPrefix.TOKEN, token, String.class);
+        log.info("{}", storedEmail);
+
+        //        User user = userService.selectByEmail("397655952@qq.com");
+//        redisService.set(UserKeyPrefix.Name, user.getSalt(), user);
+//        log.info("测试get和set方法{}", redisService.get(UserKeyPrefix.Name, user.getSalt(), User.class));
 
     }
 
