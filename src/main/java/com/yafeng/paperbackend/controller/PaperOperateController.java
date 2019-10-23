@@ -61,12 +61,12 @@ public class PaperOperateController {
         }
         // 生成操作记录（论文提交记录） 写入到操作数据库中  可以使用消息队列异步来写
         // 需要反查出新生成论文的主键ID
-        kafkaTemplate.send(
-                Constant.TOPIC,
-                JSON.toJSONString(new PaperKafkaMessage(OperateType.SUBMIT.getCode(), currentUser.getId(),
-                        paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId(), vo.getNote()))
-
-        );
+//        kafkaTemplate.send(
+//                Constant.TOPIC,
+//                JSON.toJSONString(new PaperKafkaMessage(OperateType.SUBMIT.getCode(), currentUser.getId(),
+//                        paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId(), vo.getNote()))
+//
+//        );
         responseEntity.setData("提交成功，付费后专家会开始审核您的论文！");
         // TODO 在用户付费之后 可以调用消息队列异步生成消息记录 通知相关人员去审核论文
         return responseEntity;
@@ -96,12 +96,12 @@ public class PaperOperateController {
 
         }
         // 生成操作记录（论文修改记录） 写入到操作数据库中  可以使用消息队列异步来写
-        kafkaTemplate.send(
-                Constant.TOPIC,
-                JSON.toJSONString(new PaperKafkaMessage(OperateType.MODIFY.getCode(), currentUser.getId(),
-                        vo.getId(), vo.getNote()))
-
-        );
+//        kafkaTemplate.send(
+//                Constant.TOPIC,
+//                JSON.toJSONString(new PaperKafkaMessage(OperateType.MODIFY.getCode(), currentUser.getId(),
+//                        vo.getId(), vo.getNote()))
+//
+//        );
         responseEntity.setData("修改成功！");
         // TODO 检查论文状态 可以调用消息队列异步生成消息记录 通知相关人员更新了提交
         return responseEntity;
