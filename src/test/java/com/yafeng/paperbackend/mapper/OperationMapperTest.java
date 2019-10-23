@@ -42,7 +42,7 @@ public class OperationMapperTest {
                 user.getId(),
                 10,
                 "2016220204某某某综合课题设计论文提交",
-                OperateType.SUBMIT,
+                OperateType.SUBMIT.getCode(),
                 new Date()
         );
         operationMapper.insertSelective(operation);

@@ -32,10 +32,14 @@ public class PaperRequestVo {
     /** 论文文件在服务器上的全路径*/
     private String filePath;
 
+    /** 备注消息 */
+    private String note;
+
     public boolean validate(){
         return StringUtils.isNotEmpty(name)
                 && StringUtils.isNotEmpty(keyword)
                 && StringUtils.isNotEmpty(summary)
-                && StringUtils.isNotEmpty(filePath);
+                && StringUtils.isNotEmpty(filePath)
+                && StringUtils.isNotEmpty(note);
     }
 }

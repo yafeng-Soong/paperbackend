@@ -23,6 +23,6 @@ public interface IPaperService {
 
     List<Paper> getAllPapersByPayAndCheck(Integer pay, Integer check);
 
-
+    Paper findByEmailAndName(String email, String name);
 
 }

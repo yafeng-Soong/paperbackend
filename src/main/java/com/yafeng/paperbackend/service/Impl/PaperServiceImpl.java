@@ -153,6 +153,21 @@ public class PaperServiceImpl implements IPaperService {
         return paperMapper.selectByPublisherEmailAndStatus(currentUser.getEmail(), pay, check);
     }
 
+    /**
+     * findByEmailAndName
+     * @description 根据用户邮箱和论文名称查找论文
+     * @param email 用户邮箱
+     * @param name 论文名称
+     * @return {@link }
+     * @author liugaoyang
+     * @date 2019/10/23 22:08
+     * @version 1.0.0
+     */
+    @Override
+    public Paper findByEmailAndName(String email, String name) {
+        return paperMapper.selectByPublisherEmailAndName(email, name);
+    }
+
     private Paper requestToPaper(PaperRequestVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         return new Paper(vo.getName(),

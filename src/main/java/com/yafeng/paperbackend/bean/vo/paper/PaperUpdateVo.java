@@ -27,16 +27,19 @@ public class PaperUpdateVo {
     /** 论文关键字 */
     private String keyword;
 
-    /** 论文概要 */
+    /** 论文概要*/
     private String summary;
 
     /** 论文文件在服务器上的全路径*/
     private String filePath;
 
+    /** 备注消息*/
+    private String note;
+
     /**
      * validate
      * @description 校验论文修改提交的参数
-     * 主键id一定不能为空 其他参数至少修改一项
+     * 主键id一定不能为空 其他参数至少修改一项 修改备注也不能为空
      * @return {@link Boolean}
      * @author liugaoyang
      * @date 2019/10/23 17:30
@@ -46,6 +49,6 @@ public class PaperUpdateVo {
         return (id != null) &&(StringUtils.isNotEmpty(name)
         || StringUtils.isNotEmpty(keyword)
         || StringUtils.isNotEmpty(summary)
-        || StringUtils.isNotEmpty(filePath));
+        || StringUtils.isNotEmpty(filePath)) && (StringUtils.isNotEmpty(note));
     }
 }

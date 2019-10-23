@@ -39,7 +39,7 @@ public class Operation {
     private Integer paperId;
 
     /**
-     * 操作类型，1—管理员通过，2—管理员退回，3—投稿者撤销
+     * 操作类型，0用户提交、1用户修改、2用户支付、3管理员退回，4管理员通过
      */
     private Integer type;
 
@@ -66,11 +66,11 @@ public class Operation {
      * @date 2019/10/21 15:04
      * @version 1.0.0
      */
-    public Operation(Integer operatorId, Integer paperId, String note, OperateType operateType,Date createTime){
+    public Operation(Integer operatorId, Integer paperId, String note, Integer operateType, Date createTime){
         this.note = note;
         this.operatorId = operatorId;
         this.paperId = paperId;
-        this.type = operateType.getCode();
+        this.type = operateType;
         this.createTime = createTime;
     }
 

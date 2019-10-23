@@ -33,10 +33,10 @@ public class PaperServiceImplTest {
 
     @Test
     public void testBuild() throws PaperException {
-        PaperRequestVo vo = new PaperRequestVo("serviceTest001",
-                "测试service",
-                "这是一片摘要",
-                "/home/kafka_2.1.2/");
+//        PaperRequestVo vo = new PaperRequestVo("serviceTest001",
+//                "测试service",
+//                "这是一片摘要",
+//                "/home/kafka_2.1.2/");
 //        log.info("PAPER:{}", JSON.toJSONString(paperService.buildPaper(vo)));
     }
 
