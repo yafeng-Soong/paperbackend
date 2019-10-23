@@ -28,5 +28,10 @@
         from paper where publisher_email=#{email} and pay_status=#{payStatus} and check_status=#{checkStatus}
   </select>
 
+  <select id="selectByPublisherEmailAndName" resultMap="BaseResultMap">
+        select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
+        from paper where publisher_email=#{email} and name=#{paperName}
+  </select>
+
 
 </mapper>

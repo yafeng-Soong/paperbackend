@@ -2,7 +2,10 @@ package com.yafeng.paperbackend.service;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.exception.PaperException;
+
+import java.util.List;
 
 /**
  * @author liugaoyang
@@ -12,5 +15,14 @@ import com.yafeng.paperbackend.exception.PaperException;
  */
 public interface IPaperService {
 
-    Paper buildPaper(PaperRequestVo vo) throws PaperException;
+    void buildPaper(PaperRequestVo vo) throws PaperException;
+
+    void modifyPaper(PaperUpdateVo vo) throws PaperException;
+
+    List<Paper> getAllPapers();
+
+    List<Paper> getAllPapersByPayAndCheck(Integer pay, Integer check);
+
+
+
 }
