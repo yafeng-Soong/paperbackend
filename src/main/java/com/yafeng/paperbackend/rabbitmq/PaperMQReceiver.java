@@ -26,6 +26,15 @@ public class PaperMQReceiver {
     @Autowired
     private OperationMapper operationMapper;
 
+    /**
+     * receivePaperOperateMSG
+     * @description 接收到消息的处理操作
+     * @param message 执行操作后发来的相关操作的消息内容
+     * @return {@link Void}
+     * @author liugaoyang
+     * @date 2019/10/24 9:54
+     * @version 1.0.0
+     */
     @RabbitListener(queues = RabbitMQConfig.PAPER_QUEUE)
     public void receivePaperOperateMSG(String message){
         log.info("消费者接收到消息：{}", message);

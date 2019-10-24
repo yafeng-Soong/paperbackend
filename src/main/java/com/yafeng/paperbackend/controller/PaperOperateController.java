@@ -9,6 +9,7 @@ import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
+import com.yafeng.paperbackend.service.IPaperRecordService;
 import com.yafeng.paperbackend.service.IPaperService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author liugaoyang
@@ -28,6 +31,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping(value = "/paper")
 public class PaperOperateController {
+
+    @Autowired
+    private IPaperRecordService paperRecordService;
 
     @Autowired
     private IPaperService paperService;
@@ -58,7 +64,6 @@ public class PaperOperateController {
             return responseEntity;
         }
 //         生成操作记录（论文提交记录） 写入到操作数据库中  可以使用消息队列异步来写
-//         需要反查出新生成论文的主键ID
         mqsender.sendPaperOperateMSG(
                 PaperRbmqMessage.builder()
                         // 反查数据库生成的论文
@@ -99,8 +104,7 @@ public class PaperOperateController {
         // 生成操作记录（论文修改记录） 写入到操作数据库中  可以使用消息队列异步来写
         mqsender.sendPaperOperateMSG(
                 PaperRbmqMessage.builder()
-                        // 反查数据库生成的论文
-                        .paperId(paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId())
+                        .paperId(vo.getId())
                         .note(vo.getNote())
                         .operateId(currentUser.getId())
                         .operateType(OperateType.MODIFY.getCode())
@@ -156,8 +160,21 @@ public class PaperOperateController {
      * @date 2019/10/23 20:00
      * @version 1.0.0
      */
+    @ApiOperation("论文操作记录查询")
     @GetMapping("/operation/detail")
     public ResponseEntity getOperationDetail(@RequestParam(value = "paperId", required = true) Integer paperId){
-        return null;
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Operation> result = null;
+        try {
+            result = paperRecordService.findAllByPaperId(paperId);
+        } catch (PaperException e) {
+            log.error("ERROR OCCUR: {}", e.getMessage());
+            responseEntity.setErrorResponse();
+            responseEntity.setData(e.getMessage());
+            return responseEntity;
+        }
+        responseEntity.setData(result);
+        return responseEntity;
     }
 }
