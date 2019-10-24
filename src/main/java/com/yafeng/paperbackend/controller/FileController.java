@@ -3,6 +3,7 @@ package com.yafeng.paperbackend.controller;
 import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.service.UserService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,6 +76,9 @@ public class FileController extends BaseController {
             currentUser.setAvatar("/imgs/header/" + newName);
             subject.getSession().setAttribute("currentUser", currentUser);
             userService.updateAvatar(currentUser);
+            UserResponseVo responseVo = new UserResponseVo();
+            BeanUtils.copyProperties(currentUser, responseVo);
+            response.setData(responseVo);
         }catch (IOException e){
             e.printStackTrace();
             LOGGER.error("文件上传错误：" + e.getMessage());

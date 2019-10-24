@@ -8,6 +8,7 @@ import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.RegisterAndLoginVo;
 import com.yafeng.paperbackend.bean.vo.user.UserQueryVo;
+import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
 import com.yafeng.paperbackend.bean.vo.user.UserUpdateVo;
 import com.yafeng.paperbackend.config.Redis.UserKeyPrefix;
 import com.yafeng.paperbackend.enums.ResponseEnums;
@@ -90,14 +91,19 @@ public class UserController extends BaseController {
     public  ResponseEntity updateUser(@RequestBody UserUpdateVo updateVo){
         ResponseEntity response = new ResponseEntity();
         User user = new User();
-        user.setUsername(updateVo.getUsername());
-        user.setSignature(updateVo.getSignature());
-        user.setSex(updateVo.getSex());
-        User currentUser = getCurrentUser();
-        user.setEmail(currentUser.getEmail());
+        BeanUtils.copyProperties(updateVo, user);
+        user.setEmail(getCurrentUser().getEmail());
+        log.info("更新参数：" + user.toString());
         if (userService.update(user) == 0){
             response.setErrorResponse();
             response.setData("更新失败");
+        }else{
+            // 用户信息更新成功后要修改内存中的currentUser
+            UserResponseVo responseVo = new UserResponseVo();
+            User currentUser = userService.selectByEmail(user.getEmail());
+            setCurrentUser(currentUser);
+            BeanUtils.copyProperties(currentUser, responseVo);
+            response.setData(responseVo);
         }
         return response;
     }

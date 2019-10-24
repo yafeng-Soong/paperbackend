@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.bean.vo.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.Data;
  **/
 @Data
 @ApiModel
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserUpdateVo {
     @ApiModelProperty(value = "修改后的用户名")
     private String username;

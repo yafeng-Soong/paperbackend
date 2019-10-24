@@ -73,7 +73,7 @@
             <if test="state != null and state !=''">
                 state = #{state},
             </if>
-            <if test="sex != null and sex !=''">
+            <if test="sex == 1 or sex == 0">
                 sex = #{sex},
             </if>
             <if test="signature != null and signature !=''">

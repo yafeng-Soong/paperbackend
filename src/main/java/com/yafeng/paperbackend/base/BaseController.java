@@ -46,4 +46,12 @@ public abstract class BaseController {
     protected User getCurrentUser(){
         return (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
     }
+
+    /**
+     * 设置当前登录用户的信息
+     * @param user
+     */
+    protected void setCurrentUser(User user){
+        SecurityUtils.getSubject().getSession().setAttribute("currentUser", user);
+    }
 }
