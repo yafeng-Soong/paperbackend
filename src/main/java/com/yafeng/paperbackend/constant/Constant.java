@@ -7,7 +7,7 @@ package com.yafeng.paperbackend.constant;
  * @date 2019/10/23 20:47
  */
 public class Constant {
-    /** 定义kafka消息topic 代表对论文的操作 */
+    /** 定义消息队列topic 代表对论文的操作 */
     public static final String TOPIC = "zs3_paper_system_op";
 
 

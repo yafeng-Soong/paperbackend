@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 /**
  * @author liugaoyang
  * @version 1.0.0
- * @description kafka消息对象
+ * @description rbmq 消息对象
  * @date 2019/10/23 20:43
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaperKafkaMessage {
+public class PaperRbmqMessage {
 
     /** 论文操作类型 */
     private Integer operateType;

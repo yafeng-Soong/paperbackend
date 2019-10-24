@@ -1,22 +1,20 @@
 package com.yafeng.paperbackend.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.yafeng.paperbackend.bean.entity.Operation;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
-import com.yafeng.paperbackend.bean.vo.PaperKafkaMessage;
+import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
-import com.yafeng.paperbackend.constant.Constant;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
+import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
 import com.yafeng.paperbackend.service.IPaperService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -35,7 +33,7 @@ public class PaperOperateController {
     private IPaperService paperService;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private PaperMQSender mqsender;
 
     /**
      * submit
@@ -59,14 +57,17 @@ public class PaperOperateController {
             responseEntity.setData(e.getMessage());
             return responseEntity;
         }
-        // 生成操作记录（论文提交记录） 写入到操作数据库中  可以使用消息队列异步来写
-        // 需要反查出新生成论文的主键ID
-//        kafkaTemplate.send(
-//                Constant.TOPIC,
-//                JSON.toJSONString(new PaperKafkaMessage(OperateType.SUBMIT.getCode(), currentUser.getId(),
-//                        paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId(), vo.getNote()))
-//
-//        );
+//         生成操作记录（论文提交记录） 写入到操作数据库中  可以使用消息队列异步来写
+//         需要反查出新生成论文的主键ID
+        mqsender.sendPaperOperateMSG(
+                PaperRbmqMessage.builder()
+                        // 反查数据库生成的论文
+                        .paperId(paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId())
+                        .note(vo.getNote())
+                        .operateId(currentUser.getId())
+                        .operateType(OperateType.SUBMIT.getCode())
+                .build()
+        );
         responseEntity.setData("提交成功，付费后专家会开始审核您的论文！");
         // TODO 在用户付费之后 可以调用消息队列异步生成消息记录 通知相关人员去审核论文
         return responseEntity;
@@ -96,12 +97,15 @@ public class PaperOperateController {
 
         }
         // 生成操作记录（论文修改记录） 写入到操作数据库中  可以使用消息队列异步来写
-//        kafkaTemplate.send(
-//                Constant.TOPIC,
-//                JSON.toJSONString(new PaperKafkaMessage(OperateType.MODIFY.getCode(), currentUser.getId(),
-//                        vo.getId(), vo.getNote()))
-//
-//        );
+        mqsender.sendPaperOperateMSG(
+                PaperRbmqMessage.builder()
+                        // 反查数据库生成的论文
+                        .paperId(paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId())
+                        .note(vo.getNote())
+                        .operateId(currentUser.getId())
+                        .operateType(OperateType.MODIFY.getCode())
+                        .build()
+        );
         responseEntity.setData("修改成功！");
         // TODO 检查论文状态 可以调用消息队列异步生成消息记录 通知相关人员更新了提交
         return responseEntity;
