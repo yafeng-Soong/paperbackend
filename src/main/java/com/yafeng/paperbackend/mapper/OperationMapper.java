@@ -26,4 +26,6 @@ public interface OperationMapper extends Mapper<Operation> {
      */
     List<Operation> selectByUserId(Integer userId);
 
+    List<Operation> selectByPaperId(Integer paperId);
+
 }

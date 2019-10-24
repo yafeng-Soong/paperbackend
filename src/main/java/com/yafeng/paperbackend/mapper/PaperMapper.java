@@ -37,4 +37,14 @@ public interface PaperMapper extends Mapper<Paper> {
      */
     List<Paper> selectByPublisherEmailAndStatus(@Param("email") String email, @Param("payStatus") Integer payStatus, @Param("checkStatus") Integer checkStatus);
 
+    /**
+     * selectByPublisherEmailAndName
+     * @description 根据用户 和论文名称筛选论文
+     * @param
+     * @return {@link }
+     * @author liugaoyang
+     * @date 2019/10/23 16:32
+     * @version 1.0.0
+     */
+    Paper selectByPublisherEmailAndName(@Param("email") String email, @Param("paperName") String paperName);
 }

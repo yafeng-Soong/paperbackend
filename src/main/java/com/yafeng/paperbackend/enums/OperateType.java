@@ -23,9 +23,9 @@ public enum OperateType {
 
     SUBMIT("提交", 0),
     MODIFY("修改", 1),
-
-    RETURNED("修改",2),
-    PASSED("通过", 3);
+    PAY("支付", 2),
+    RETURNED("退回",3),
+    PASSED("通过", 4);
 
     private String description;
 
