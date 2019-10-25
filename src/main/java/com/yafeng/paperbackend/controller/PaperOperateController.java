@@ -6,10 +6,10 @@ import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
-import com.yafeng.paperbackend.constant.Constant;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
+import com.yafeng.paperbackend.service.IFileService;
 import com.yafeng.paperbackend.service.IPaperRecordService;
 import com.yafeng.paperbackend.service.IPaperService;
 import io.swagger.annotations.Api;
@@ -20,8 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,6 +34,9 @@ import java.util.List;
 @Slf4j
 @RequestMapping(value = "/paper")
 public class PaperOperateController {
+
+    @Autowired
+    private IFileService fileService;
 
     @Autowired
     private IPaperRecordService paperRecordService;
@@ -125,7 +127,7 @@ public class PaperOperateController {
         ResponseEntity responseEntity = new ResponseEntity();
         String path = null;
         try {
-            path = uploadFile(file);
+            path = fileService.uploadFile(file);
             responseEntity.setData(path);
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());
@@ -134,6 +136,13 @@ public class PaperOperateController {
             return responseEntity;
         }
         return responseEntity;
+    }
+
+    @ApiOperation("文件下载")
+    @GetMapping(value = "/download")
+    public void downloadFile(@RequestParam("paperId") Integer paperId, HttpServletResponse response){
+        fileService.downloadFile(paperId, response);
+        return;
     }
 
 
@@ -183,7 +192,7 @@ public class PaperOperateController {
      * @version 1.0.0
      */
     @ApiOperation("论文操作记录查询")
-    @GetMapping("/operation/detail")
+    @GetMapping(value = "/operation/detail")
     public ResponseEntity getOperationDetail(@RequestParam(value = "paperId", required = true) Integer paperId){
 
         ResponseEntity responseEntity = new ResponseEntity();
@@ -198,42 +207,6 @@ public class PaperOperateController {
             return responseEntity;
         }
         return responseEntity;
-    }
-
-
-    /**
-     * uploadFile
-     * @description 文件上传功能
-     * @param file 前端传来的文件流
-     * @return {@link String} 文件的存储路径
-     * @author liugaoyang
-     * @date 2019/10/25 10:50
-     * @version 1.0.0
-     */
-    private String uploadFile(MultipartFile file) throws PaperException {
-        if (file == null || file.isEmpty()){
-            throw new PaperException("文件上传出错，请检查上传的文件！");
-        }
-        // 判断当前项目路径下是否包含上传文件的路径 不包含则创建
-        File fileDir = new File(Constant.UPLOAD_PATH);
-        File newFile = null;
-        if (!fileDir.isDirectory()){
-            fileDir.mkdirs();
-        }
-        try {
-            String[] array = file.getOriginalFilename().split("\\.");
-            String prefixName = array[0];
-            String suffix = array[1];
-            // 上传到服务器上文件的名称 为/当前项目路径/upoladFile/原文件名+当前时间+文件后缀
-            newFile = new File(Constant.UPLOAD_PATH + prefixName + System.currentTimeMillis() + "." + suffix);
-            file.transferTo(newFile);
-        } catch (IOException e) {
-            log.error("文件上传异常");
-            e.printStackTrace();
-            throw new PaperException(e.getMessage());
-        }
-        // 返回文件存储的绝对路径
-        return newFile.getAbsolutePath();
     }
 
 }
