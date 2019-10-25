@@ -48,8 +48,8 @@ public class PaperMapperTest {
 
     @Test
     public void testSelect(){
-        log.info("{}", JSON.toJSONString(paperMapper.selectByPublisherEmail("734190426@qq.com")));
-        log.info("{}", paperMapper.selectByPublisherEmailAndStatus("734190426@qq.com", 1, 0));
+        log.info("{}", JSON.toJSONString(paperMapper.selectAllByPublisherEmail("734190426@qq.com")));
+        log.info("{}", paperMapper.selectAllByPublisherEmailAndStatus("734190426@qq.com", 1, 0));
         log.info("{}", paperMapper.selectByPublisherEmailAndName("734190426@qq.com", "mapper测试001"));
     }
 

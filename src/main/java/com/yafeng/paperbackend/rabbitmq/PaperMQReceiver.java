@@ -65,32 +65,6 @@ public class PaperMQReceiver {
         //数据库插入记录
         operationMapper.insert(operation);
         log.info("成功将操作写入数据库：{}", message);
-
-//        switch (operateType){
-//            case SUBMIT:
-//                Operation operation = new Operation(message.getOperateId(),
-//                        message.getPaperId(),
-//                        message.getNote(),
-//                        message.getOperateType(),
-//                        new Date());
-//                //数据库插入记录
-//                operationMapper.insert(operation);
-//                break;
-//            case MODIFY:
-//                Operation operation1 = new Operation(message.getOperateId(),
-//                        message.getPaperId(),
-//                        message.getNote(),
-//                        message.getOperateType(),
-//                        new Date());
-//                operationMapper.insert(operation1);
-//                break;
-//            case RETURNED:
-//                break;
-//            case PASSED:
-//                break;
-//            case PAY:
-//                break;
-//        }
     }
 
 }

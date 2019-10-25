@@ -17,13 +17,13 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
-  <select id="selectByPublisherEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectAllByPublisherEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
         select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
         from paper where publisher_email=#{email}
   </select>
 
 
-  <select id="selectByPublisherEmailAndStatus" resultMap="BaseResultMap">
+  <select id="selectAllByPublisherEmailAndStatus" resultMap="BaseResultMap">
         select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
         from paper where publisher_email=#{email} and pay_status=#{payStatus} and check_status=#{checkStatus}
   </select>
@@ -33,5 +33,9 @@
         from paper where publisher_email=#{email} and name=#{paperName}
   </select>
 
+  <select id="selectAllByCheckStatus" resultMap="BaseResultMap">
+        select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
+        from paper where check_status=#{checkStatus} order by update_time DESC
+  </select>
 
 </mapper>

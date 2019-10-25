@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author liugaoyang
@@ -53,7 +52,7 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
         }
         // 普通用户只能查询自己论文的提交记录
         if (!searchAllPermission){
-            Paper paper = paperMapper.selectByPublisherEmail(currentUser.getEmail()).stream()
+            Paper paper = paperMapper.selectAllByPublisherEmail(currentUser.getEmail()).stream()
                     .filter(e -> e.getId().equals(paperId))
                     .findAny()
                     .orElseThrow(() -> new PaperException("权限不足"));

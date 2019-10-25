@@ -1,6 +1,7 @@
 package com.yafeng.paperbackend.service;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
+import com.yafeng.paperbackend.bean.vo.paper.AdminCheckVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.exception.PaperException;
@@ -23,6 +24,10 @@ public interface IPaperService {
 
     List<Paper> getAllPapersByPayAndCheck(Integer pay, Integer check);
 
+    List<Paper> getAllPapersByCheckStatus(Integer check);
+
     Paper findByEmailAndName(String email, String name);
+
+    void modifyPaperCheckStatus(AdminCheckVo vo) throws PaperException;
 
 }
