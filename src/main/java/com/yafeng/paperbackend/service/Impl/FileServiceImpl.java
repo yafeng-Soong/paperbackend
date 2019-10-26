@@ -5,7 +5,6 @@ import com.yafeng.paperbackend.constant.Constant;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.mapper.PaperMapper;
 import com.yafeng.paperbackend.service.IFileService;
-import com.yafeng.paperbackend.service.IPaperService;
 import com.yafeng.paperbackend.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

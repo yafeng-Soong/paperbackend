@@ -121,6 +121,15 @@ public class PaperOperateController {
         return responseEntity;
     }
 
+    /**
+     * fileUpload
+     * @description 文件上传接口
+     * @param file 客户端提交来的文件
+     * @return {@link ResponseEntity}
+     * @author liugaoyang
+     * @date 2019/10/26 13:02
+     * @version 1.0.0
+     */
     @ApiOperation("文件上传（返回文件的绝对路径）")
     @PostMapping("/fileUpload")
     public ResponseEntity fileUpload(@RequestParam(value = "file") MultipartFile file){
@@ -138,6 +147,16 @@ public class PaperOperateController {
         return responseEntity;
     }
 
+    /**
+     * downloadFile
+     * @description 文件下载接口
+     * @param paperId 论文主键 根据主键查找文件的存储位置
+     * @param response http response 利用http协议来传输文件
+     * @return {@link Void}
+     * @author liugaoyang
+     * @date 2019/10/26 13:00
+     * @version 1.0.0
+     */
     @ApiOperation("文件下载")
     @GetMapping(value = "/download")
     public void downloadFile(@RequestParam("paperId") Integer paperId, HttpServletResponse response){
