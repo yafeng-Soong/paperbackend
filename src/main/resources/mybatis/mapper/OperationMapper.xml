@@ -14,12 +14,12 @@
   </resultMap>
 
   <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
-       select id, operator_id, paper_id, type, create_time, note from operation where operator_id=#{userId}
+       select id, operator_id, paper_id, type, create_time, note from operation where operator_id=#{userId} order by create_time DESC
   </select>
 
 
   <select id="selectByPaperId" parameterType="int" resultMap="BaseResultMap">
-       select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId}
+       select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId} order by create_time DESC
   </select>
 
 </mapper>

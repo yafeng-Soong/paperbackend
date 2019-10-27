@@ -1,11 +1,18 @@
 package com.yafeng.paperbackend.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.yafeng.paperbackend.bean.entity.Operation;
+import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.PageQueryVo;
+import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
+import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperQueryVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateRequestVo;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
@@ -96,7 +103,7 @@ public class PaperOperateController {
      */
     @ApiOperation("修改后论文修改接口")
     @PutMapping(value = "/reSubmit")
-    public ResponseEntity reSubmit(@RequestBody PaperUpdateVo vo){
+    public ResponseEntity reSubmit(@RequestBody PaperUpdateRequestVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -173,13 +180,15 @@ public class PaperOperateController {
      * @author liugaoyang
      * @date 2019/10/23 19:06
      * @version 1.0.0
-     * todo 增加分页参数
      */
     @ApiOperation("论文列表信息")
-    @GetMapping(value = "/all")
-    public ResponseEntity findAllPapers(){
+    @PostMapping(value = "/all")
+    public ResponseEntity findAllPapers(@RequestBody PageQueryVo pageQueryVo){
         ResponseEntity responseEntity = new ResponseEntity();
-        responseEntity.setData(paperService.getAllPapers());
+        Page<Paper> page = PageHelper.startPage(pageQueryVo.getPageNum(), pageQueryVo.getPageSize());
+        // 根据用户email去查询该用户所有的论文
+        List<Paper> paperList = paperService.getAllPapers();
+        responseEntity.setData(new PageResponseVo<>(paperList, page));
         return responseEntity;
     }
 
@@ -192,11 +201,13 @@ public class PaperOperateController {
      * @version 1.0.0
      */
     @ApiOperation("查询论文列表信息根据状态")
-    @GetMapping(value = "/all/status")
-    public ResponseEntity findAllPapersByStatus(@RequestParam(value = "pay", defaultValue = "1") Integer payStatus,
-                                                @RequestParam(value = "check", defaultValue = "0") Integer checkStatus){
+    @PostMapping(value = "/all/status")
+    public ResponseEntity findAllPapersByStatus(@RequestBody PaperQueryVo vo){
+
         ResponseEntity responseEntity = new ResponseEntity();
-        responseEntity.setData(paperService.getAllPapersByPayAndCheck(payStatus, checkStatus));
+        Page<Paper> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+        List<Paper> paperList = paperService.getAllPapersByPayAndCheck(vo.getPayStatus(), vo.getCheckStatus());
+        responseEntity.setData(new PageResponseVo<>(paperList, page));
         return responseEntity;
     }
 
@@ -204,21 +215,22 @@ public class PaperOperateController {
     /**
      * getOperationDetail
      * @description  查询某篇论文的提交修改记录 (包括审核者的退回操作)
-     * @param paperId 论文唯一主键
+     * @param vo 论文唯一主键
      * @return {@link Operation}s
      * @author liugaoyang
      * @date 2019/10/23 20:00
      * @version 1.0.0
+     * TODO 改为分页参数之后 后端未做参数的校验 需要前端进行校验
      */
     @ApiOperation("论文操作记录查询")
-    @GetMapping(value = "/operation/detail")
-    public ResponseEntity getOperationDetail(@RequestParam(value = "paperId", required = true) Integer paperId){
-
+    @PostMapping(value = "/operation/detail")
+    public ResponseEntity getOperationDetail(@RequestBody OperationQueryVo vo){
         ResponseEntity responseEntity = new ResponseEntity();
         List<Operation> result = null;
         try {
-            result = paperRecordService.findAllByPaperId(paperId);
-            responseEntity.setData(result);
+            Page<Operation> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+            result = paperRecordService.findAllByPaperId(vo.getPaperId());
+            responseEntity.setData(new PageResponseVo<>(result, page));
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());
             responseEntity.setErrorResponse();

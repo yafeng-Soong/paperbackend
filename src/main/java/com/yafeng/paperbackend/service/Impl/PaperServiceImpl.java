@@ -2,9 +2,9 @@ package com.yafeng.paperbackend.service.Impl;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.User;
-import com.yafeng.paperbackend.bean.vo.paper.AdminCheckVo;
+import com.yafeng.paperbackend.bean.vo.admin.AdminCheckRequestVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateRequestVo;
 import com.yafeng.paperbackend.enums.CheckStatus;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.enums.PayStatus;
@@ -77,7 +77,7 @@ public class PaperServiceImpl implements IPaperService {
      * @version 1.0.0
      */
     @Override
-    public void modifyPaper(PaperUpdateVo vo) throws PaperException {
+    public void modifyPaper(PaperUpdateRequestVo vo) throws PaperException {
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         if (!vo.validate()){
             throw new PaperException("Please ensure that the paper information is completed!");
@@ -148,10 +148,10 @@ public class PaperServiceImpl implements IPaperService {
     @Override
     public List<Paper> getAllPapersByPayAndCheck(Integer pay, Integer check) {
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
-        log.info("用户：{}查询了支付状态为：{}审核状态为：{}的论文列表",
+        log.info("{}查询了支付状态为：{} 审核状态为：{} 的论文信息",
+                currentUser.getEmail(),
                 PayStatus.of(pay).getDescription(),
-                CheckStatus.of(check).getDescription(),
-                currentUser.getEmail());
+                CheckStatus.of(check).getDescription());
         return paperMapper.selectAllByPublisherEmailAndStatus(currentUser.getEmail(), pay, check);
     }
 
@@ -194,7 +194,7 @@ public class PaperServiceImpl implements IPaperService {
      * @version 1.0.0
      */
     @Override
-    public void modifyPaperCheckStatus(AdminCheckVo vo) throws PaperException {
+    public void modifyPaperCheckStatus(AdminCheckRequestVo vo) throws PaperException {
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         if (!vo.validate()){
             throw new PaperException("Please ensure that the paper information is completed!");
