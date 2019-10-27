@@ -2,9 +2,11 @@ package com.yafeng.paperbackend.service.Impl;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.paper.AdminCheckVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.enums.CheckStatus;
+import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.enums.PayStatus;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.mapper.PaperMapper;
@@ -61,7 +63,6 @@ public class PaperServiceImpl implements IPaperService {
     }
 
 
-
     /**
      * modifyPaper
      * @description 用户更新论文
@@ -102,7 +103,7 @@ public class PaperServiceImpl implements IPaperService {
                 throw new PaperException("You have already submit the same name paper!");
             }
         }
-        // 组装实体类
+        // 组装实体类 用户修改了论文之后 论文需变为待审核状态
         Paper paper = new Paper(oldPaper.getId(),
                 vo.getName(),
                 oldPaper.getPublisherEmail(),
@@ -110,7 +111,8 @@ public class PaperServiceImpl implements IPaperService {
                 vo.getSummary(),
                 vo.getFilePath(),
                 oldPaper.getPayStatus(),
-                oldPaper.getCheckStatus(),
+                // 改为待审核状态
+                CheckStatus.PENDINGREVIEW.getCode(),
                 oldPaper.getCreateTime(),
                 new Date());
         // 有选择的更新操作
@@ -130,7 +132,7 @@ public class PaperServiceImpl implements IPaperService {
     public List<Paper> getAllPapers() {
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         log.info("用户：{}查询了论文列表", currentUser.getEmail());
-        return paperMapper.selectByPublisherEmail(currentUser.getEmail());
+        return paperMapper.selectAllByPublisherEmail(currentUser.getEmail());
     }
 
     /**
@@ -150,7 +152,22 @@ public class PaperServiceImpl implements IPaperService {
                 PayStatus.of(pay).getDescription(),
                 CheckStatus.of(check).getDescription(),
                 currentUser.getEmail());
-        return paperMapper.selectByPublisherEmailAndStatus(currentUser.getEmail(), pay, check);
+        return paperMapper.selectAllByPublisherEmailAndStatus(currentUser.getEmail(), pay, check);
+    }
+
+    /**
+     * getAllPapersByCheckStatus
+     * @description 根据审核状态查询论文列表
+     * @param check 审核状态
+     * @return {@link Paper}
+     * @author liugaoyang
+     * @date 2019/10/25 19:17
+     * @version 1.0.0
+     */
+    @Override
+    public List<Paper> getAllPapersByCheckStatus(Integer check) {
+        log.info("管理员用户查询了审核状态为：{}", CheckStatus.of(check).getDescription());
+        return paperMapper.selectAllByCheckStatus(check);
     }
 
     /**
@@ -158,7 +175,7 @@ public class PaperServiceImpl implements IPaperService {
      * @description 根据用户邮箱和论文名称查找论文
      * @param email 用户邮箱
      * @param name 论文名称
-     * @return {@link }
+     * @return {@link Paper}
      * @author liugaoyang
      * @date 2019/10/23 22:08
      * @version 1.0.0
@@ -167,6 +184,57 @@ public class PaperServiceImpl implements IPaperService {
     public Paper findByEmailAndName(String email, String name) {
         return paperMapper.selectByPublisherEmailAndName(email, name);
     }
+
+    /**
+     * modifyPaperCheckStatus
+     * @description 管理员审核相关
+     * @return {@link Paper}
+     * @author liugaoyang
+     * @date 2019/10/25 20:04
+     * @version 1.0.0
+     */
+    @Override
+    public void modifyPaperCheckStatus(AdminCheckVo vo) throws PaperException {
+        User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
+        if (!vo.validate()){
+            throw new PaperException("Please ensure that the paper information is completed!");
+        }
+        // 查询更新之前的状态
+        Paper oldPaper = paperMapper.selectByPrimaryKey(vo.getPaperId());
+        // 只有待审核状态才能被操作
+        if(!CheckStatus.of(oldPaper.getCheckStatus()).equals(CheckStatus.PENDINGREVIEW)){
+            log.error("当前论文状态不允许您进行操作:{}", OperateType.of(vo.getType()).getDescription());
+            throw new PaperException("当前论文状态不允许您进行操作！");
+        }
+
+        // 现在此论文是待审核状态
+        Integer checkStatus = 0;
+        OperateType operateType = OperateType.of(vo.getType());
+        // 退回操作 则论文变回待修改
+        if (operateType.equals(OperateType.RETURNED)) {
+            checkStatus = CheckStatus.TOBEMODIFIED.getCode();
+        }
+        //通过审核 则论文变为通过状态
+        else if (operateType.equals(OperateType.PASSED)){
+            checkStatus = CheckStatus.PASSED.getCode();
+        }else{
+            // 否则抛出异常 因为管理员只会审核待审核的论文 结果只有退户修改或者通过
+            throw new PaperException("错误的操作");
+        }
+        log.info("管理员：{} 对论文：{} 执行了：{} 操作 评语为:{}",
+                currentUser.getEmail(),
+                vo.getPaperId(),
+                OperateType.of(vo.getType()).getDescription(), vo.getNote());
+
+        Paper paper = Paper.builder()
+                .id(vo.getPaperId())
+                .checkStatus(checkStatus)
+                .updateTime(new Date())
+                .build();
+        // 只需更新论文状态和修改时间即可
+        paperMapper.updateByPrimaryKeySelective(paper);
+    }
+
 
     private Paper requestToPaper(PaperRequestVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");

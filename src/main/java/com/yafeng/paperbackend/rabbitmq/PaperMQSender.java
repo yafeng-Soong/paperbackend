@@ -20,7 +20,6 @@ public class PaperMQSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-
     public void sendPaperOperateMSG(PaperRbmqMessage paperRbmqMessage){
         String msg = JSON.toJSONString(paperRbmqMessage);
         log.info("用户执行操作，向消费者发送操作消息：{}", msg);

@@ -16,7 +16,7 @@ import java.util.List;
 public interface PaperMapper extends Mapper<Paper> {
 
     /**
-     * selectByPublisherEmail
+     * selectAllByPublisherEmail
      * @description 查找用户提交的所有论文
      * @param email 提交用户的邮箱
      * @return {@link Paper}s
@@ -24,10 +24,10 @@ public interface PaperMapper extends Mapper<Paper> {
      * @date 2019/10/21 15:30
      * @version 1.0.0
      */
-    List<Paper> selectByPublisherEmail(String email);
+    List<Paper> selectAllByPublisherEmail(String email);
 
     /**
-     * selectByPublisherEmailAndStatus
+     * selectAllByPublisherEmailAndStatus
      * @description 查询用户的某个状态的所有论文
      * @param
      * @return {@link Paper}s
@@ -35,7 +35,7 @@ public interface PaperMapper extends Mapper<Paper> {
      * @date 2019/10/21 15:30
      * @version 1.0.0
      */
-    List<Paper> selectByPublisherEmailAndStatus(@Param("email") String email, @Param("payStatus") Integer payStatus, @Param("checkStatus") Integer checkStatus);
+    List<Paper> selectAllByPublisherEmailAndStatus(@Param("email") String email, @Param("payStatus") Integer payStatus, @Param("checkStatus") Integer checkStatus);
 
     /**
      * selectByPublisherEmailAndName
@@ -47,4 +47,16 @@ public interface PaperMapper extends Mapper<Paper> {
      * @version 1.0.0
      */
     Paper selectByPublisherEmailAndName(@Param("email") String email, @Param("paperName") String paperName);
+
+
+    /**
+     * selectAllByCheckStatus
+     * @description 管理员查询某个审核状态的所有论文
+     * @param checkStatus 论文审核状态
+     * @return {@link Paper}s
+     * @author liugaoyang
+     * @date 2019/10/25 19:13
+     * @version 1.0.0
+     */
+    List<Paper> selectAllByCheckStatus(Integer checkStatus);
 }
