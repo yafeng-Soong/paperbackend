@@ -81,6 +81,7 @@ public class UserController extends BaseController {
             e.printStackTrace();
             response.setCode(ResponseEnums.INNER_ERROR.getCode());
             response.setMsg(ResponseEnums.INNER_ERROR.getMsg());
+            response.setData("服务器异常");
         }finally {
             return response;
         }
