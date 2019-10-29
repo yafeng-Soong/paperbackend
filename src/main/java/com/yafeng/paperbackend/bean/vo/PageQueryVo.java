@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.naming.Name;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 

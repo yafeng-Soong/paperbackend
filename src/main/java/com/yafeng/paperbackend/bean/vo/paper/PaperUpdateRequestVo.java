@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.bean.vo.paper;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaperUpdateVo {
+@ApiModel("用户申请更新论文对象")
+public class PaperUpdateRequestVo {
 
     /** 更新的论文主键 */
     private Integer id;

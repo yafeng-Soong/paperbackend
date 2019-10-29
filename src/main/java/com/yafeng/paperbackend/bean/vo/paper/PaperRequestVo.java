@@ -1,5 +1,6 @@
 package com.yafeng.paperbackend.bean.vo.paper;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ApiModel("用户提交论文对象")
 public class PaperRequestVo {
 
     /**一个用户提交的论文不存在重名的情况 不同的用户可以提交相同名字的论文*/

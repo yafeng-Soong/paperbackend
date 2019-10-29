@@ -1,5 +1,6 @@
-package com.yafeng.paperbackend.bean.vo.paper;
+package com.yafeng.paperbackend.bean.vo.admin;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AdminCheckVo {
+@ApiModel("管理员审核结果对象")
+public class AdminCheckRequestVo {
 
     /** 论文主键 */
     private Integer paperId;

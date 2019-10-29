@@ -8,6 +8,15 @@ spring:
     username: root
     password: fuck@you!
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 8
+      minimum-idle: 4
+      idle-timeout: 30000
+      connection-timeout: 30000
+      max-lifetime: 45000
+      auto-commit: true
+      pool-name: PaperHikariCP
   redis:
     host: 39.108.138.143
     port: 6379

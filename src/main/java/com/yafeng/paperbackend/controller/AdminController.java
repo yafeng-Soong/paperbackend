@@ -1,10 +1,14 @@
 package com.yafeng.paperbackend.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
-import com.yafeng.paperbackend.bean.vo.paper.AdminCheckVo;
-import com.yafeng.paperbackend.enums.OperateType;
+import com.yafeng.paperbackend.bean.vo.admin.AdminCheckRequestVo;
+import com.yafeng.paperbackend.bean.vo.admin.AdminQueryVo;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
 import com.yafeng.paperbackend.service.IPaperService;
@@ -14,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author liugaoyang
@@ -36,20 +42,22 @@ public class AdminController {
     /**
      *
      * @description  管理员用户查询审核状态为xx的论文列表
-     * @param checkStatus
-     * @return {@link ResponseEntity}
+     * @param vo 带有分页参数的查询请求
+     * @return {@link ResponseEntity} 经过分页的论文数据
      * @author liugaoyang
      * @date 2019/10/25 18:56
      * @version 1.0.0
      */
     @ApiOperation("管理员用户查询论文列表")
-    @GetMapping(value = "/list")
-    public ResponseEntity getAllPapersByCheckStatus(@RequestParam(value = "checkStatus") Integer checkStatus){
+    @PostMapping(value = "/list")
+    public ResponseEntity getAllPapersByCheckStatus(@RequestBody AdminQueryVo vo){
         ResponseEntity responseEntity = new ResponseEntity();
         try {
             // 校验权限身份
             validate();
-            responseEntity.setData(paperService.getAllPapersByCheckStatus(checkStatus));
+            Page<Paper> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+            List<Paper> paperList = paperService.getAllPapersByCheckStatus(vo.getCheckStatus());
+            responseEntity.setData(new PageResponseVo<>(paperList, page));
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());
             responseEntity.setErrorResponse();
@@ -59,9 +67,18 @@ public class AdminController {
         return responseEntity;
     }
 
-    @ApiOperation("管理员审核")
+    /**
+     * check
+     * @description 管理员审核用户提交的待审核状态的论文
+     * @param adminCheckVo 请求实体
+     * @return {@link ResponseEntity}
+     * @author liugaoyang
+     * @date 2019/10/28 0:45
+     * @version 1.0.0
+     */
+    @ApiOperation("管理员审核操作")
     @PostMapping(value = "/check")
-    public ResponseEntity check(@RequestBody AdminCheckVo adminCheckVo){
+    public ResponseEntity check(@RequestBody AdminCheckRequestVo adminCheckVo){
         ResponseEntity responseEntity = new ResponseEntity();
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         try {

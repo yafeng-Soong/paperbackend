@@ -19,18 +19,18 @@
 
   <select id="selectAllByPublisherEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
         select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
-        from paper where publisher_email=#{email}
+        from paper where publisher_email=#{email} order by update_time DESC
   </select>
 
 
   <select id="selectAllByPublisherEmailAndStatus" resultMap="BaseResultMap">
         select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
-        from paper where publisher_email=#{email} and pay_status=#{payStatus} and check_status=#{checkStatus}
+        from paper where publisher_email=#{email} and pay_status=#{payStatus} and check_status=#{checkStatus} order by update_time DESC
   </select>
 
   <select id="selectByPublisherEmailAndName" resultMap="BaseResultMap">
         select id, name, publisher_email, keyword, summary, file_path, pay_status, check_status, create_time, update_time
-        from paper where publisher_email=#{email} and name=#{paperName}
+        from paper where publisher_email=#{email} and name=#{paperName} order by update_time DESC
   </select>
 
   <select id="selectAllByCheckStatus" resultMap="BaseResultMap">

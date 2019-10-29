@@ -52,6 +52,7 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
         }
         // 普通用户只能查询自己论文的提交记录
         if (!searchAllPermission){
+            // 如果为空则说明有其他用户通过伪造请求的方式查询论文提交记录 直接抛出异常
             Paper paper = paperMapper.selectAllByPublisherEmail(currentUser.getEmail()).stream()
                     .filter(e -> e.getId().equals(paperId))
                     .findAny()
