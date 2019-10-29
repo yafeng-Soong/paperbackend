@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,7 +70,7 @@ public class FileController extends BaseController {
         //重命名图片为邮箱加后缀
         String[] nameArray = img.getOriginalFilename().split("\\.");
         String imgType = nameArray[nameArray.length - 1];
-        String newName = currentUser.getEmail() + "." + imgType;
+        String newName = new Date().getTime()+ "." + currentUser.getEmail() + "." + imgType;
         try {
             img.transferTo(new File(HEADER_PATH + newName));
             //更新用户信息
