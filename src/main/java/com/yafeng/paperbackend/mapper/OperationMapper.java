@@ -1,6 +1,7 @@
 package com.yafeng.paperbackend.mapper;
 
 import com.yafeng.paperbackend.bean.entity.Operation;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -26,6 +27,27 @@ public interface OperationMapper extends Mapper<Operation> {
      */
     List<Operation> selectByUserId(Integer userId);
 
+    /**
+     * selectByPaperId
+     * @description 查询某篇论文的所有提交记录
+     * @param paperId 论文主键
+     * @return {@link Operation}
+     * @author liugaoyang
+     * @date 2019/11/4 19:36
+     * @version 1.0.0
+     */
     List<Operation> selectByPaperId(Integer paperId);
+
+    /**
+     * selectByUserIdAndPaperId
+     * @description 查询某个人的某篇论文的所有记录
+     * @param userId 用户主键
+     * @param paperId 论文主键
+     * @return {@link Operation}
+     * @author liugaoyang
+     * @date 2019/11/4 19:36
+     * @version 1.0.0
+     */
+    List<Operation> selectByUserIdAndPaperId(@Param("userId") Integer userId, @Param("paperId") Integer paperId);
 
 }

@@ -10,9 +10,10 @@ import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperCancelVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperQueryVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateRequestVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperBuildVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
@@ -52,7 +53,7 @@ public class PaperOperateController {
     private IPaperService paperService;
 
     @Autowired
-    private PaperMQSender mqsender;
+    private PaperMQSender mqSender;
 
     /**
      * submit
@@ -65,7 +66,7 @@ public class PaperOperateController {
      */
     @ApiOperation("论文提交接口")
     @PostMapping(value = "/submit")
-    public ResponseEntity submit(@RequestBody PaperRequestVo vo){
+    public ResponseEntity submit(@RequestBody PaperBuildVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         ResponseEntity responseEntity = new ResponseEntity();
         try {
@@ -77,8 +78,7 @@ public class PaperOperateController {
             responseEntity.setData(e.getMessage());
             return responseEntity;
         }
-//         生成操作记录（论文提交记录） 写入到操作数据库中  可以使用消息队列异步来写
-        mqsender.sendPaperOperateMSG(
+        mqSender.sendPaperOperateMSG(
                 PaperRbmqMessage.builder()
                         // 反查数据库生成的论文
                         .paperId(paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId())
@@ -90,6 +90,7 @@ public class PaperOperateController {
         // TODO 在用户付费之后 可以调用消息队列异步生成消息记录 通知相关人员去审核论文
         return responseEntity;
     }
+
 
     /**
      * reSubmit
@@ -103,11 +104,11 @@ public class PaperOperateController {
      */
     @ApiOperation("修改后论文修改接口")
     @PutMapping(value = "/reSubmit")
-    public ResponseEntity reSubmit(@RequestBody PaperUpdateRequestVo vo){
+    public ResponseEntity reSubmit(@RequestBody PaperUpdateVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         ResponseEntity responseEntity = new ResponseEntity();
         try {
-            paperService.modifyPaper(vo);
+            paperService.updatePaper(vo);
             responseEntity.setData("修改成功！");
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());
@@ -115,8 +116,7 @@ public class PaperOperateController {
             responseEntity.setData(e.getMessage());
             return responseEntity;
         }
-        // 生成操作记录（论文修改记录） 写入到操作数据库中  可以使用消息队列异步来写
-        mqsender.sendPaperOperateMSG(
+        mqSender.sendPaperOperateMSG(
                 PaperRbmqMessage.builder()
                         .paperId(vo.getId())
                         .note(vo.getNote())
@@ -127,6 +127,41 @@ public class PaperOperateController {
         // TODO 检查论文状态 可以调用消息队列异步生成消息记录 通知相关人员更新了提交
         return responseEntity;
     }
+
+    /**
+     *
+     * @description 用户请求撤销某篇未提交的论文
+     * @return {@link }
+     * @author liugaoyang
+     * @date 2019/11/4 20:20
+     * @version 1.0.0
+     */
+    /** 注意是非幂等的操作 */
+    @ApiOperation("撤销某篇论文")
+    @PostMapping(value = "/cancel")
+    public ResponseEntity cancel(@RequestBody PaperCancelVo vo){
+        User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
+        ResponseEntity responseEntity = new ResponseEntity();
+        try {
+            paperService.cancelPaper(vo);
+            responseEntity.setData("撤销成功！");
+        } catch (PaperException e) {
+            log.error("ERROR OCCUR: {}", e.getMessage());
+            responseEntity.setErrorResponse();
+            responseEntity.setData(e.getMessage());
+            return responseEntity;
+        }
+        mqSender.sendPaperOperateMSG(
+                PaperRbmqMessage.builder()
+                        .paperId(vo.getPaperId())
+                        .note(vo.getNote())
+                        .operateId(currentUser.getId())
+                        .operateType(OperateType.CANCEL.getCode())
+                        .build()
+        );
+        return responseEntity;
+    }
+
 
     /**
      * fileUpload
@@ -153,6 +188,7 @@ public class PaperOperateController {
         }
         return responseEntity;
     }
+
 
     /**
      * downloadFile
@@ -191,6 +227,7 @@ public class PaperOperateController {
         responseEntity.setData(new PageResponseVo<>(paperList, page));
         return responseEntity;
     }
+
 
     /**
      * findAllPapersByStatus

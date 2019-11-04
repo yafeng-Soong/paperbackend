@@ -17,9 +17,11 @@ import java.util.stream.Stream;
 public enum CheckStatus {
 
     // 用户第一次提交的论文为待审核、 若审核通过则变为已通过状态、若未通过则变为待修改状态 需要用户修改后再次提交
-    PENDINGREVIEW("待审核", 0),
-    TOBEMODIFIED("待修改",1),
-    PASSED("已通过",2);
+    // 用户可以执行撤销操作 撤销待审核状态的论文的投递
+    TO_REVIEW("待审核", 0),
+    TO_MODIFY("待修改",1),
+    PASSED("已通过",2),
+    CANCELED("已撤销", 3);
 
     private String description;
 

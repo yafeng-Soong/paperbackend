@@ -7,7 +7,7 @@ import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
-import com.yafeng.paperbackend.bean.vo.admin.AdminCheckRequestVo;
+import com.yafeng.paperbackend.bean.vo.admin.AdminCheckVo;
 import com.yafeng.paperbackend.bean.vo.admin.AdminQueryVo;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
@@ -78,13 +78,13 @@ public class AdminController {
      */
     @ApiOperation("管理员审核操作")
     @PostMapping(value = "/check")
-    public ResponseEntity check(@RequestBody AdminCheckRequestVo adminCheckVo){
+    public ResponseEntity check(@RequestBody AdminCheckVo adminCheckVo){
         ResponseEntity responseEntity = new ResponseEntity();
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         try {
             // 校验身份
             validate();
-            paperService.modifyPaperCheckStatus(adminCheckVo);
+            paperService.reviewPaper(adminCheckVo);
             responseEntity.setData("操作成功！");
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());

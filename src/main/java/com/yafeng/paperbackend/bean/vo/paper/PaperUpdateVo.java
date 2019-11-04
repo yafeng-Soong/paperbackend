@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 @Builder
 @ApiModel("用户申请更新论文对象")
-public class PaperUpdateRequestVo {
+public class PaperUpdateVo {
 
     /** 更新的论文主键 */
     private Integer id;

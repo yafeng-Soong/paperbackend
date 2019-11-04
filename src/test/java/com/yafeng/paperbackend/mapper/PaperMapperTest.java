@@ -35,7 +35,7 @@ public class PaperMapperTest {
 
     @Test
     public void testBuild(){
-        Paper paper = new Paper("mapper测试001", "734190426@qq.com", "综合课题设计III", "这是个简短的摘要", "/root/lgy/xx", PayStatus.UNPAID, CheckStatus.PENDINGREVIEW, new Date());
+        Paper paper = new Paper("mapper测试001", "734190426@qq.com", "综合课题设计III", "这是个简短的摘要", "/root/lgy/xx", PayStatus.UNPAID, CheckStatus.TO_REVIEW, new Date());
         paperMapper.insertSelective(paper);
     }
 
