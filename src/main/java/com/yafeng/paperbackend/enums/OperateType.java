@@ -18,14 +18,14 @@ public enum OperateType {
 
     // 待补充与完善
     // 对论文的操作 分为用户操作 与审核人员操作
-    // 用户可以 提交、修改
+    // 用户可以 提交、修改、撤销（用户只能撤销未审核的论文）
     // 审核人员可以 退稿、通过
-
     SUBMIT("提交", 0),
     MODIFY("修改", 1),
     PAY("支付", 2),
     RETURNED("退回",3),
-    PASSED("通过", 4);
+    PASSED("通过", 4),
+    CANCEL("撤销", 5);
 
     private String description;
 

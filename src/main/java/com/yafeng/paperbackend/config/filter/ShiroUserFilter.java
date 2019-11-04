@@ -2,7 +2,6 @@ package com.yafeng.paperbackend.config.filter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
-import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;

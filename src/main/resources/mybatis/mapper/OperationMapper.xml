@@ -22,4 +22,8 @@
        select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId} order by create_time DESC
   </select>
 
+  <select id="selectByUserIdAndPaperId" resultMap="BaseResultMap">
+       select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId} and operator_id=#{userId} order by create_time DESC
+  </select>
+
 </mapper>

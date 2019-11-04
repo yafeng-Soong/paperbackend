@@ -1,9 +1,10 @@
 package com.yafeng.paperbackend.service;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
-import com.yafeng.paperbackend.bean.vo.admin.AdminCheckRequestVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperRequestVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateRequestVo;
+import com.yafeng.paperbackend.bean.vo.admin.AdminCheckVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperBuildVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperCancelVo;
+import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.exception.PaperException;
 
 import java.util.List;
@@ -16,18 +17,28 @@ import java.util.List;
  */
 public interface IPaperService {
 
-    void buildPaper(PaperRequestVo vo) throws PaperException;
+    /**  用户创建论文*/
+    void buildPaper(PaperBuildVo vo) throws PaperException;
 
-    void modifyPaper(PaperUpdateRequestVo vo) throws PaperException;
+    /**  用户更新论文*/
+    void updatePaper(PaperUpdateVo vo) throws PaperException;
 
+    /**  用户查询论文列表*/
     List<Paper> getAllPapers();
 
+    /**  根据支付状态和审核状态查询论文*/
     List<Paper> getAllPapersByPayAndCheck(Integer pay, Integer check);
 
+    /**  管理员根据审核状态查找论文列表*/
     List<Paper> getAllPapersByCheckStatus(Integer check);
 
+    /**  根据用户邮箱和论文名称查找论文*/
     Paper findByEmailAndName(String email, String name);
 
-    void modifyPaperCheckStatus(AdminCheckRequestVo vo) throws PaperException;
+    /**  管理员审核论文*/
+    void reviewPaper(AdminCheckVo vo) throws PaperException;
+
+    /**  用户撤销论文*/
+    void cancelPaper(PaperCancelVo vo) throws PaperException;
 
 }

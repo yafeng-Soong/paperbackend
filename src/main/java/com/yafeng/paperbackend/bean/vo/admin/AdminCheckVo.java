@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 @Builder
 @ApiModel("管理员审核结果对象")
-public class AdminCheckRequestVo {
+public class AdminCheckVo {
 
     /** 论文主键 */
     private Integer paperId;
