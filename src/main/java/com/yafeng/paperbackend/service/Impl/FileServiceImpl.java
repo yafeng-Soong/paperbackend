@@ -61,7 +61,7 @@ public class FileServiceImpl implements IFileService {
             throw new PaperException(e.getMessage());
         }
         // 返回文件存储的绝对路径
-        return newFile.getAbsolutePath();
+        return "/files/" + newFile.getName();
     }
 
     /**

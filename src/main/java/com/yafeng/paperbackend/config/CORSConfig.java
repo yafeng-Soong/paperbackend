@@ -36,7 +36,7 @@ public class CORSConfig {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/imgs/**").addResourceLocations("file:/usr/web/imgs/");
-                registry.addResourceHandler("/files/**").addResourceLocations("file:/usr/web/files/");
+                registry.addResourceHandler("/files/**").addResourceLocations("file:/usr/web/uploadFile/");
             }
         };
     }
