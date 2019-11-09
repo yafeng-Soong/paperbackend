@@ -10,10 +10,7 @@ import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperCancelVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperQueryVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperBuildVo;
-import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
+import com.yafeng.paperbackend.bean.vo.paper.*;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
@@ -30,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liugaoyang
@@ -224,7 +222,12 @@ public class PaperOperateController {
         Page<Paper> page = PageHelper.startPage(pageQueryVo.getPageNum(), pageQueryVo.getPageSize());
         // 根据用户email去查询该用户所有的论文
         List<Paper> paperList = paperService.getAllPapers();
-        responseEntity.setData(new PageResponseVo<>(paperList, page));
+        // 转换列表类型
+        List<PaperResponseVo> responseVoList = paperList
+                .stream()
+                .map(source -> new PaperResponseVo(source))
+                .collect(Collectors.toList());
+        responseEntity.setData(new PageResponseVo<>(responseVoList, page));
         return responseEntity;
     }
 

@@ -5,6 +5,7 @@ import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
 import com.yafeng.paperbackend.enums.ResponseEnums;
+import com.yafeng.paperbackend.service.IPaperService;
 import com.yafeng.paperbackend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -38,15 +39,18 @@ public class FileController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
     //限制图片格式
     private List<String> imgTypes = Arrays.asList("image/jpeg","image/gif","image/png","image/bmp");
-    //限制文件格式为doc和pdf
-    private List<String> fileTypes = Arrays.asList("application/msword", "application/pdf");
+    //限制文件格式为doc、docx和pdf
+    private List<String> fileTypes = Arrays.asList("application/msword", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
     private static final String ROOT_PATH = "/usr/web";
     private static final String HEADER_PATH = ROOT_PATH + "/imgs/header/";
+    private static final String FILE_PATH = ROOT_PATH + "/files/";
     private static final String DEFAULT_HEADER = ROOT_PATH + "/imgs/header/default.jpg";
 
     @Autowired
     UserService userService;
+    @Autowired
+    IPaperService paperService;
 
     @ApiOperation("上传用户头像接口")
     @ApiImplicitParam(name = "img", value = "图片文件", required = true)
@@ -93,5 +97,25 @@ public class FileController extends BaseController {
             return  response;
         }
     }
+
+//    @ApiOperation("上传文件接口")
+//    @ApiImplicitParam(name = "img", value = "图片文件", required = true)
+//    @PostMapping("/file")
+//    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file,
+//                                     @RequestParam("paperId") Integer paperId){
+//        ResponseEntity response = new ResponseEntity();
+//        String fileType = file.getContentType();
+//        if (!fileTypes.contains(fileType)){
+//            response.setCode(ResponseEnums.FILE_TYPE_ERROR.getCode());
+//            response.setMsg(ResponseEnums.FILE_TYPE_ERROR.getMsg());
+//            return response;
+//        }
+//        User currentUser = getCurrentUser();
+//        String filePath = FILE_PATH;
+//        File path = new File(filePath);
+//        if (!path.exists())
+//            path.mkdir();
+//
+//    }
 
 }

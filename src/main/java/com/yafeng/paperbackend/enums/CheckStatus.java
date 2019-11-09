@@ -20,8 +20,9 @@ public enum CheckStatus {
     // 用户可以执行撤销操作 撤销待审核状态的论文的投递
     TO_REVIEW("待审核", 0),
     TO_MODIFY("待修改",1),
-    PASSED("已通过",2),
-    CANCELED("已撤销", 3);
+    PASSED("已通过待付款",2),
+    PAYED("已付款", 3),
+    CANCELED("已撤销", 4);
 
     private String description;
 
