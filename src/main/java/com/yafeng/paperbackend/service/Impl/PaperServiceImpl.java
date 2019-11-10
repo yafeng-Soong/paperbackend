@@ -94,8 +94,8 @@ public class PaperServiceImpl implements IPaperService {
         if (!oldPaper.getPublisherEmail().equals(currentUser.getEmail())){
             throw new PaperException("权限不足,无法修改");
         }
-        if (CheckStatus.PASSED.equals(CheckStatus.of(oldPaper.getCheckStatus()))){
-            // 已通过状态的论文不允许修改
+        if (CheckStatus.PASSED.getCode() <= CheckStatus.of(oldPaper.getCheckStatus()).getCode()){
+            // 已通过状态的论文不允许修改(只有处于0-待审核、1-待修改状态的论文才可更新)
             throw new PaperException("The passed paper doesn't allow to modify");
         }
         // 若修改了论文名称 则需要判定修改后的名称是否重名
