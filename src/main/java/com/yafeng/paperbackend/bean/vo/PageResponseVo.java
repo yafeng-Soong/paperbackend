@@ -28,7 +28,7 @@ public class PageResponseVo<T> {
     @ApiModelProperty(value = "实际数据")
     private List<T> data;
 
-    public PageResponseVo(List<T> data,Page page){
+    public PageResponseVo(List<T> data, Page page){
         this.data = data;
         pageNum = page.getPageNum();
         pageSize = page.getPageSize();

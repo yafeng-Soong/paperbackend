@@ -51,6 +51,8 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
             searchAllPermission = true;
         }
         if (!searchAllPermission){
+            // 先查出来数据 解决pageHelper只对第一条sql分页的问题
+            operationMapper.selectByPaperId(paperId);
             // 普通用户只能查询自己论文的提交记录
             // 如果为空则说明有其他用户通过伪造请求的方式查询论文提交记录 直接抛出异常
             Paper paper = paperMapper.selectAllByPublisherEmail(currentUser.getEmail()).stream()

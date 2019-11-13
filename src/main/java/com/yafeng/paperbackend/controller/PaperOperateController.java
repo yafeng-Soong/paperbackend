@@ -270,6 +270,7 @@ public class PaperOperateController {
         try {
             Page<Operation> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
             result = paperRecordService.findAllByPaperId(vo.getPaperId());
+            log.info("操作记录的数量{}", result.size());
             responseEntity.setData(new PageResponseVo<>(result, page));
         } catch (PaperException e) {
             log.error("ERROR OCCUR: {}", e.getMessage());
