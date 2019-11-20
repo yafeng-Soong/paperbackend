@@ -79,6 +79,9 @@
             <if test="signature != null and signature !=''">
                 signature = #{signature}
             </if>
+            <if test="cash != null">
+                cash = #{cash}
+            </if>
         </set>
         WHERE email = #{email}
     </update>

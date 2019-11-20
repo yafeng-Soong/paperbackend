@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * project_name: paperbackend
  * package: com.yafeng.paperbackend.bean.vo
@@ -22,6 +24,8 @@ public class UserUpdateVo {
     private String signature;
     @ApiModelProperty(value = "修改后的性别")
     private Integer sex;
+    @ApiModelProperty(value = "账户余额")
+    private BigDecimal cash;
 
     public Integer getSex(){
         return sex;
