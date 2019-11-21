@@ -16,7 +16,7 @@ public class PayConstant {
     // 服务部署到远端服务器使用
     public static final String WX_NOTIFY_URL = "http://47.94.211.34:8082/pay/notify";
 
-    public static final String ALIPAY_APPID = "2018062960540016";
+    public static final String ALIPAY_APPID = "xxxx";
     // 支付宝公钥 用来验证支付宝发来的异步内容
     public static final String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtojdtkETo4OEsQLeyyPwtWK9ZqYJANq6jjXC74vk9n/r88yW577y7VdxcK9X/F/wvR7D8of7lndYdhg6xZro0eO2skPZTU+A549J7tfzahVbIBAS+x1WPFJwPtVrfBBvkwHL8PT+YnMcxKyBxOa6wo8fzJs1NgU1+qnDCpwUFyv59GUfdzBvTPL1fY3ZzvRHFHbapevVltbO/jNV0thb8dafmcJXl8lnjQy3XlH3eTH28tlVfqickacfRl/WSD8WN3dGgF7dTDKYfSR7YB7jsHe6VzoHM3UnD9/yQbi/Z3ZrL7yOxEjq4tfrKlZIW7ZCoUpOU4QdPIRhLeC6nWyGrQIDAQAB";
     // 商户应用私钥 用来对商户请求加签名
