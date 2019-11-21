@@ -34,7 +34,7 @@
                              targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <table schema="paper" tableName="${tableName}">
+        <table schema="paper" tableName="${tableName}" domainObjectName="PayInfo">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
     </context>

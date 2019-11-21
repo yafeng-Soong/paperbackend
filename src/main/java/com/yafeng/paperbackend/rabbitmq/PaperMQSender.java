@@ -1,7 +1,6 @@
 package com.yafeng.paperbackend.rabbitmq;
 
 import com.alibaba.fastjson.JSON;
-import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.config.RabbitMQConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -20,10 +19,22 @@ public class PaperMQSender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendPaperOperateMSG(PaperRbmqMessage paperRbmqMessage){
-        String msg = JSON.toJSONString(paperRbmqMessage);
+    public void sendPaperOperateMSG(PaperOperateMessage paperOperateMessage){
+        String msg = JSON.toJSONString(paperOperateMessage);
         log.info("用户执行操作，向消费者发送操作消息：{}", msg);
-        rabbitTemplate.convertAndSend(RabbitMQConfig.PAPER_QUEUE, msg);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.PAPER_QUEUE_OP, msg);
+    }
+
+    public void sendPaperStatusMSG(PaperStatusMessage paperStatusMessage){
+        String msg = JSON.toJSONString(paperStatusMessage);
+        log.info("用户成功付款！修改论文的状态");
+        rabbitTemplate.convertAndSend(RabbitMQConfig.PAPER_QUEUE_STATUS, msg);
+    }
+
+    public void sendPaperPayMSG(PaperPayMessage paperPayMessage){
+        String msg = JSON.toJSONString(paperPayMessage);
+        log.info("用户成功付款！修改论文的状态");
+        rabbitTemplate.convertAndSend(RabbitMQConfig.PAPER_QUEUE_PAY, msg);
     }
 
 

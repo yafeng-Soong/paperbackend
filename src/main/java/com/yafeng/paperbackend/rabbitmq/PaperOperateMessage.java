@@ -1,4 +1,4 @@
-package com.yafeng.paperbackend.bean.vo;
+package com.yafeng.paperbackend.rabbitmq;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaperRbmqMessage {
+public class PaperOperateMessage {
 
     /** 论文操作类型 */
     private Integer operateType;

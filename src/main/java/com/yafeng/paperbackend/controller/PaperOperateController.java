@@ -8,7 +8,7 @@ import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
-import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
+import com.yafeng.paperbackend.rabbitmq.PaperOperateMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
 import com.yafeng.paperbackend.bean.vo.paper.*;
 import com.yafeng.paperbackend.enums.OperateType;
@@ -77,7 +77,7 @@ public class PaperOperateController {
             return responseEntity;
         }
         mqSender.sendPaperOperateMSG(
-                PaperRbmqMessage.builder()
+                PaperOperateMessage.builder()
                         // 反查数据库生成的论文
                         .paperId(paperService.findByEmailAndName(currentUser.getEmail(), vo.getName()).getId())
                         .note(vo.getNote())
@@ -115,7 +115,7 @@ public class PaperOperateController {
             return responseEntity;
         }
         mqSender.sendPaperOperateMSG(
-                PaperRbmqMessage.builder()
+                PaperOperateMessage.builder()
                         .paperId(vo.getId())
                         .note(vo.getNote())
                         .operateId(currentUser.getId())
@@ -150,7 +150,7 @@ public class PaperOperateController {
             return responseEntity;
         }
         mqSender.sendPaperOperateMSG(
-                PaperRbmqMessage.builder()
+                PaperOperateMessage.builder()
                         .paperId(vo.getPaperId())
                         .note(vo.getNote())
                         .operateId(currentUser.getId())

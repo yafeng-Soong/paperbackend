@@ -6,7 +6,7 @@ import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
 import com.yafeng.paperbackend.bean.entity.User;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
-import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
+import com.yafeng.paperbackend.rabbitmq.PaperOperateMessage;
 import com.yafeng.paperbackend.bean.vo.admin.AdminCheckVo;
 import com.yafeng.paperbackend.bean.vo.admin.AdminQueryVo;
 import com.yafeng.paperbackend.exception.PaperException;
@@ -94,7 +94,7 @@ public class AdminController {
         }
         // 通知消息队列执行操作记录
         mqsender.sendPaperOperateMSG(
-                PaperRbmqMessage.builder()
+                PaperOperateMessage.builder()
                         // 反查数据库生成的论文
                         .paperId(adminCheckVo.getPaperId())
                         .note(adminCheckVo.getNote())

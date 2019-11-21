@@ -34,7 +34,12 @@ import org.springframework.context.annotation.Scope;
 public class RabbitMQConfig {
 
     // 队列
-    public static final String PAPER_QUEUE = "PAPER_OP";
+    public static final String PAPER_QUEUE_OP = "PAPER_OP";
+
+    public static final String PAPER_QUEUE_STATUS = "PAPER_STATUS";
+
+    public static final String PAPER_QUEUE_PAY = "PAPER_PAY";
+
 
     private String host;
 
@@ -66,6 +71,18 @@ public class RabbitMQConfig {
     // 直接交换机模式：新建论文操作使用的队列
     @Bean
     public Queue PAPERQueue(){
-        return new Queue(PAPER_QUEUE, true);
+        return new Queue(PAPER_QUEUE_OP, true);
     }
+
+    @Bean
+    public Queue STATUSQueue(){
+        return new Queue(PAPER_QUEUE_STATUS, true);
+    }
+
+    @Bean
+    public Queue PAYQueue(){
+        return new Queue(PAPER_QUEUE_PAY, true);
+    }
+
+
 }

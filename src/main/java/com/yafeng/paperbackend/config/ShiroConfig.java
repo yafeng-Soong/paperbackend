@@ -107,6 +107,10 @@ public class ShiroConfig {
         //filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/login", "anon");//登录不需要认证，但退出登录要认证防止未认证用户把已登录用户退出
         filterChainDefinitionMap.put("/captcha.jpg", "anon");
+
+        // 付款异步回调直接shiro放行
+        filterChainDefinitionMap.put("/pay/notify", "anon");
+
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/user/signUp", "anon");
         filterChainDefinitionMap.put("/user/activate", "anon");
