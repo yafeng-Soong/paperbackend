@@ -2,6 +2,7 @@ package com.yafeng.paperbackend.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.yafeng.paperbackend.base.BaseController;
 import com.yafeng.paperbackend.bean.entity.Operation;
 import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.ResponseEntity;
@@ -10,22 +11,28 @@ import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
+import com.yafeng.paperbackend.bean.vo.operation.PayVo;
 import com.yafeng.paperbackend.bean.vo.paper.*;
 import com.yafeng.paperbackend.enums.OperateType;
+import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
 import com.yafeng.paperbackend.service.IFileService;
 import com.yafeng.paperbackend.service.IPaperRecordService;
 import com.yafeng.paperbackend.service.IPaperService;
+import com.yafeng.paperbackend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +46,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping(value = "/paper")
-public class PaperOperateController {
+public class PaperOperateController extends BaseController {
 
     @Autowired
     private IFileService fileService;
@@ -49,6 +56,9 @@ public class PaperOperateController {
 
     @Autowired
     private IPaperService paperService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PaperMQSender mqSender;
@@ -278,6 +288,45 @@ public class PaperOperateController {
             return responseEntity;
         }
         return responseEntity;
+    }
+
+    @ApiOperation("支付稿费")
+    @PostMapping("/pay")
+    public ResponseEntity pay(@RequestBody @Valid PayVo payVo, BindingResult bindingResult){
+        ResponseEntity response = new ResponseEntity();
+        if (validateParams(response, bindingResult))
+            return response;
+        User currentUser = getCurrentUser();
+        BigDecimal cash = currentUser.getCash();
+        if (cash.compareTo(payVo.getCash()) < 1){
+            response.setErrorResponse();
+            response.setData("支付失败，余额不足请充值");
+            return response;
+        }
+        try{
+            paperService.pay(payVo.getPaperId());
+            currentUser.setCash(cash.subtract(payVo.getCash()));
+            setCurrentUser(currentUser);
+            userService.updateCash(currentUser);
+            mqSender.sendPaperOperateMSG(
+                    PaperRbmqMessage.builder()
+                            .paperId(payVo.getPaperId())
+                            .note("支付金额" + payVo.getCash())
+                            .operateId(currentUser.getId())
+                            .operateType(OperateType.PAY.getCode())
+                            .build()
+            );
+        }catch (PaperException e){
+            log.error("支付失败" + e.getMessage());
+            response.setErrorResponse();
+            response.setData(e.getMessage());
+        }catch (Exception e){
+            log.error("登录时发生未知错误~");
+            response.setCode(ResponseEnums.INNER_ERROR.getCode());
+            response.setMsg(ResponseEnums.INNER_ERROR.getMsg());
+        }finally {
+            return response;
+        }
     }
 
 }

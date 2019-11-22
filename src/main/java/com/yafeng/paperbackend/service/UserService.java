@@ -28,6 +28,13 @@ public interface UserService extends BaseService<User> {
     int updateAvatar(User user);
 
     /**
+     * 修改余额
+     * @param user
+     * @return
+     */
+    int updateCash(User user);
+
+    /**
      * 激活账户
      * @param email
      * @return

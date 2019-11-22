@@ -281,6 +281,32 @@ public class PaperServiceImpl implements IPaperService {
         paperMapper.updateByPrimaryKeySelective(paper);
     }
 
+    @Override
+    public void pay(Integer paperId) throws PaperException{
+        User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
+        // 查询更新之前的状态
+        Paper oldPaper = paperMapper.selectByPrimaryKey(paperId);
+        if (oldPaper == null){
+            log.error("数据库异常，无法找到paper id:{}对应的实体类", paperId);
+            // 可以连接短信SDK通知运维人员
+            throw new PaperException("网络连接超时");
+        }
+        // 判断查询出来的论文是否属于当前用户
+        if (!oldPaper.getPublisherEmail().equals(currentUser.getEmail())){
+            throw new PaperException("权限不足,无法支付");
+        }
+        if (oldPaper.getCheckStatus() != CheckStatus.PASSED.getCode()){
+            log.error("论文【" + paperId + "】当前状态不允许支付");
+            throw new PaperException("当前论文状态不允许支付");
+        }
+        Paper paper = new Paper();
+        paper.setId(paperId);
+        paper.setCheckStatus(CheckStatus.PAYED.getCode());
+        paperMapper.updateByPrimaryKeySelective(paper);
+        log.info("用户：{}支付了论文：{}", currentUser.getEmail(), oldPaper);
+        return;
+    }
+
 
     private Paper requestToPaper(PaperBuildVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");

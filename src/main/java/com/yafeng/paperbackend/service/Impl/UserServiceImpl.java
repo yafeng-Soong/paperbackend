@@ -79,6 +79,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int updateCash(User user) {
+        User update = new User();
+        update.setCash(user.getCash());
+        update.setEmail(user.getEmail());
+        return userMapper.update(update);
+    }
+
+    @Override
     public int activateUser(String email) {
         User update = new User();
         update.setEmail(email);

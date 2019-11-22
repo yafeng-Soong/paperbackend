@@ -7,6 +7,7 @@ import com.yafeng.paperbackend.bean.vo.paper.PaperCancelVo;
 import com.yafeng.paperbackend.bean.vo.paper.PaperUpdateVo;
 import com.yafeng.paperbackend.exception.PaperException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,5 +41,8 @@ public interface IPaperService {
 
     /**  用户撤销论文*/
     void cancelPaper(PaperCancelVo vo) throws PaperException;
+
+    /** 将论文状态改为已支付*/
+    void pay(Integer paperId) throws PaperException;
 
 }
