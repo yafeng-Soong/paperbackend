@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.SendFailedException;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -215,5 +216,32 @@ public class UserController extends BaseController {
             }
         }
         return response;
+    }
+
+    @ApiOperation("充值")
+    @GetMapping("/charge")
+    public ResponseEntity charge(@RequestParam("charge") int charge){
+        ResponseEntity response = new ResponseEntity();
+        if (charge < 0 || charge > 10000){
+            response.setCode(ResponseEnums.VALID_ERROR.getCode());
+            response.setMsg(ResponseEnums.VALID_ERROR.getMsg());
+            response.setData("充值金额不符合要求！");
+            return  response;
+        }
+        User currentUser = getCurrentUser();
+        currentUser.setCash(currentUser.getCash().add(new BigDecimal(charge)));
+        try{
+            userService.updateCash(currentUser);
+            UserResponseVo responseVo = new UserResponseVo();
+            User user = userService.selectByEmail(currentUser.getEmail());
+            setCurrentUser(user);
+            BeanUtils.copyProperties(user, responseVo);
+            response.setData(responseVo);
+        }catch (Exception e){
+            response.setErrorResponse();
+            response.setData("服务器异常");
+        }finally {
+            return response;
+        }
     }
 }

@@ -24,8 +24,6 @@ public class UserUpdateVo {
     private String signature;
     @ApiModelProperty(value = "修改后的性别")
     private Integer sex;
-    @ApiModelProperty(value = "账户余额")
-    private BigDecimal cash;
 
     public Integer getSex(){
         return sex;
