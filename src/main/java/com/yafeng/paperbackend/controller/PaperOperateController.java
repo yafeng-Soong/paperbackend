@@ -13,6 +13,7 @@ import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
 import com.yafeng.paperbackend.bean.vo.operation.PayVo;
 import com.yafeng.paperbackend.bean.vo.paper.*;
+import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
 import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.enums.ResponseEnums;
 import com.yafeng.paperbackend.exception.PaperException;
@@ -25,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -316,6 +318,9 @@ public class PaperOperateController extends BaseController {
                             .operateType(OperateType.PAY.getCode())
                             .build()
             );
+            UserResponseVo responseVo = new UserResponseVo();
+            BeanUtils.copyProperties(currentUser, responseVo);
+            response.setData(responseVo);
         }catch (PaperException e){
             log.error("支付失败" + e.getMessage());
             response.setErrorResponse();

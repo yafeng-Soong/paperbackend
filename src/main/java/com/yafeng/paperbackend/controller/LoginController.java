@@ -86,6 +86,17 @@ public class LoginController extends BaseController {
         }
     }
 
+    @ApiOperation("返回当前用户信息")
+    @GetMapping("/getCurrentUser")
+    public ResponseEntity currentUser(){
+        ResponseEntity response = new ResponseEntity();
+        User currentUser = getCurrentUser();
+        UserResponseVo responseVo = new UserResponseVo();
+        BeanUtils.copyProperties(currentUser, responseVo);
+        response.setData(responseVo);
+        return response;
+    }
+
     @ApiIgnore
     @GetMapping("/sayHello")
     public String sayHello(){
