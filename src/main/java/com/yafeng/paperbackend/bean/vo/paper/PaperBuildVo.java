@@ -25,6 +25,9 @@ public class PaperBuildVo {
     /** 论文名称 */
     private String name;
 
+    /** 文章作者*/
+    private String author;
+
     /** 论文关键字 */
     private String keyword;
 
@@ -39,6 +42,7 @@ public class PaperBuildVo {
 
     public boolean validate(){
         return StringUtils.isNotEmpty(name)
+                && StringUtils.isNotEmpty(author)
                 && StringUtils.isNotEmpty(keyword)
                 && StringUtils.isNotEmpty(summary)
                 && StringUtils.isNotEmpty(filePath)

@@ -107,6 +107,7 @@ public class PaperServiceImpl implements IPaperService {
         // 组装实体类 用户修改了论文之后 论文需变为待审核状态
         Paper paper = new Paper(oldPaper.getId(),
                 vo.getName(),
+                vo.getAuthor(),
                 oldPaper.getPublisherEmail(),
                 vo.getKeyword(),
                 vo.getSummary(),
@@ -311,6 +312,7 @@ public class PaperServiceImpl implements IPaperService {
     private Paper requestToPaper(PaperBuildVo vo){
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         return new Paper(vo.getName(),
+                vo.getAuthor(),
                 currentUser.getEmail(),
                 vo.getKeyword(),
                 vo.getSummary(),

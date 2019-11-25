@@ -26,6 +26,11 @@ public class PaperResponseVo {
     private String name;
 
     /**
+     * 论文作者
+     */
+    private String author;
+
+    /**
      * 提交论文的用户email
      */
     private String publisherEmail;

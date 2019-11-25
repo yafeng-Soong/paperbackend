@@ -36,6 +36,11 @@ public class Paper {
     private String name;
 
     /**
+     * 论文作者
+     */
+    private String author;
+
+    /**
      * 提交论文的用户email
      */
     @Column(name = "publisher_email")
@@ -96,10 +101,11 @@ public class Paper {
      * @date 2019/10/21 14:58
      * @version 1.0.0
      */
-    public Paper(String name, String publisherEmail, String keyword, String summary,
+    public Paper(String name, String author, String publisherEmail, String keyword, String summary,
                  String filePath, PayStatus payStatus, CheckStatus checkStatus,
                  Date createTime){
         this.name = name;
+        this.author = author;
         this.publisherEmail = publisherEmail;
         this.keyword = keyword;
         this.summary = summary;

@@ -26,6 +26,11 @@ public class PaperUpdateVo {
     /** 论文名称 */
     private String name;
 
+    /**
+     * 论文作者
+     */
+    private String author;
+
     /** 论文关键字 */
     private String keyword;
 
@@ -49,6 +54,7 @@ public class PaperUpdateVo {
      */
     public boolean validate(){
         return (id != null) &&(StringUtils.isNotEmpty(name)
+                || StringUtils.isNotEmpty(author)
         || StringUtils.isNotEmpty(keyword)
         || StringUtils.isNotEmpty(summary)
         || StringUtils.isNotEmpty(filePath)) && (StringUtils.isNotEmpty(note));
