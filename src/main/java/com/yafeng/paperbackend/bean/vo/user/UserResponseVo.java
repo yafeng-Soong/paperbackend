@@ -19,4 +19,5 @@ public class UserResponseVo {
     private BigDecimal cash;
     private Integer sex;
     private String signature;
+    private String role;
 }
