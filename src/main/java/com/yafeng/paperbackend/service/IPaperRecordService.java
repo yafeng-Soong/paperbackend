@@ -1,6 +1,7 @@
 package com.yafeng.paperbackend.service;
 
 import com.yafeng.paperbackend.bean.entity.Operation;
+import com.yafeng.paperbackend.bean.vo.operation.OperationVo;
 import com.yafeng.paperbackend.exception.PaperException;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import java.util.List;
 public interface IPaperRecordService {
 
     /** 查询某篇论文的操作记录（限制查询用户？） */
-    List<Operation> findAllByPaperId(Integer paperId) throws PaperException;
+    List<OperationVo> findAllByPaperId(Integer paperId) throws PaperException;
 }

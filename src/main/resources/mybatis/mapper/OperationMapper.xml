@@ -1,29 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yafeng.paperbackend.mapper.OperationMapper">
-  <resultMap id="BaseResultMap" type="com.yafeng.paperbackend.bean.entity.Operation">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="operator_id" jdbcType="INTEGER" property="operatorId" />
-    <result column="paper_id" jdbcType="INTEGER" property="paperId" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.yafeng.paperbackend.bean.entity.Operation">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="operator_id" jdbcType="INTEGER" property="operatorId"/>
+        <result column="paper_id" jdbcType="INTEGER" property="paperId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+    </resultMap>
+
+    <resultMap id="OperationDetail" type="com.yafeng.paperbackend.bean.vo.operation.OperationVo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="operator_id" jdbcType="INTEGER" property="operatorId"/>
+        <result column="paper_id" jdbcType="INTEGER" property="paperId"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+    </resultMap>
+
+
 
   <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
-       select id, operator_id, paper_id, type, create_time, note from operation where operator_id=#{userId} order by create_time DESC
+       select id, operator_id, paper_id, type, create_time, note
+       from operation
+       where operator_id=#{userId}
+       order by create_time DESC
   </select>
 
-
   <select id="selectByPaperId" parameterType="int" resultMap="BaseResultMap">
-       select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId} order by create_time DESC
+       select id, operator_id, paper_id, type, create_time, note
+       from operation
+       where paper_id=#{paperId}
+       order by create_time DESC
   </select>
 
   <select id="selectByUserIdAndPaperId" resultMap="BaseResultMap">
-       select id, operator_id, paper_id, type, create_time, note from operation where paper_id=#{paperId} and operator_id=#{userId} order by create_time DESC
+       select id, operator_id, paper_id, type, create_time, note
+       from operation
+       where paper_id=#{paperId}
+       and operator_id=#{userId}
+       order by create_time DESC
+  </select>
+
+  <select id="selectDetailByPaperId" resultMap="OperationDetail">
+    select op.id, op.operator_id, op.paper_id, op.type, op.create_time, op.note, u.username, u.role
+    from operation op
+    left join user u
+    on op.operator_id = u.id
+    where op.paper_id=#{paperId}
+    order by op.create_time DESC
   </select>
 
 </mapper>
