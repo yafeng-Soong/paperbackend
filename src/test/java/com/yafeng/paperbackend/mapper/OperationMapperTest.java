@@ -50,7 +50,7 @@ public class OperationMapperTest {
 
     @Test
     public void testSelect(){
-      log.info("{}", operationMapper.selectByUserId(3));
+      log.info("{}", operationMapper.selectDetailByPaperId(16));
     }
 
 }

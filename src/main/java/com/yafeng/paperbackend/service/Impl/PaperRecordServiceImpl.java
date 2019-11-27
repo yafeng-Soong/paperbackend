@@ -3,6 +3,7 @@ package com.yafeng.paperbackend.service.Impl;
 import com.yafeng.paperbackend.bean.entity.Operation;
 import com.yafeng.paperbackend.bean.entity.Paper;
 import com.yafeng.paperbackend.bean.entity.User;
+import com.yafeng.paperbackend.bean.vo.operation.OperationVo;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.mapper.OperationMapper;
 import com.yafeng.paperbackend.mapper.PaperMapper;
@@ -42,7 +43,7 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
      * @version 1.0.0
      */
     @Override
-    public List<Operation> findAllByPaperId(Integer paperId) throws PaperException {
+    public List<OperationVo> findAllByPaperId(Integer paperId) throws PaperException {
         // 获取查询用户的权限信息
         User currentUser = (User) SecurityUtils.getSubject().getSession().getAttribute("currentUser");
         boolean searchAllPermission = false;
@@ -52,7 +53,7 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
         }
         if (!searchAllPermission){
             // 先查出来数据 解决pageHelper只对第一条sql分页的问题
-            List<Operation> result = operationMapper.selectByPaperId(paperId);
+            List<OperationVo> result = operationMapper.selectDetailByPaperId(paperId);
             // 普通用户只能查询自己论文的提交记录
             // 如果为空则说明有其他用户通过伪造请求的方式查询论文提交记录 直接抛出异常
             Paper paper = paperMapper.selectAllByPublisherEmail(currentUser.getEmail()).stream()
@@ -65,6 +66,6 @@ public class PaperRecordServiceImpl implements IPaperRecordService {
             }
         }
         // 管理员用户查找所有的论文提交记录
-        return operationMapper.selectByPaperId(paperId);
+        return operationMapper.selectDetailByPaperId(paperId);
     }
 }

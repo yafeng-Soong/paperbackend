@@ -11,6 +11,7 @@ import com.yafeng.paperbackend.bean.vo.PageQueryVo;
 import com.yafeng.paperbackend.bean.vo.PageResponseVo;
 import com.yafeng.paperbackend.bean.vo.PaperRbmqMessage;
 import com.yafeng.paperbackend.bean.vo.operation.OperationQueryVo;
+import com.yafeng.paperbackend.bean.vo.operation.OperationVo;
 import com.yafeng.paperbackend.bean.vo.operation.PayVo;
 import com.yafeng.paperbackend.bean.vo.paper.*;
 import com.yafeng.paperbackend.bean.vo.user.UserResponseVo;
@@ -278,7 +279,7 @@ public class PaperOperateController extends BaseController {
     @PostMapping(value = "/operation/detail")
     public ResponseEntity getOperationDetail(@RequestBody OperationQueryVo vo){
         ResponseEntity responseEntity = new ResponseEntity();
-        List<Operation> result = null;
+        List<OperationVo> result = null;
         try {
             Page<Operation> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
             result = paperRecordService.findAllByPaperId(vo.getPaperId());
