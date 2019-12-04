@@ -37,21 +37,20 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    private static final String recipient = "1412452881@qq.com" ;
-
     /**
      * 发送简单文本邮件
      */
-    public void sendSimpleEmail() {
+    public void sendSimpleEmail(String email, String paperName, String operateType) {
         SimpleMailMessage message = new SimpleMailMessage();
         // 发送者
         message.setFrom(sender);
         // 接收者
-        message.setTo(recipient);
+        message.setTo(email);
         //邮件主题
-        message.setSubject("主题：文本邮件");
+        message.setSubject("论文状态有变化");
         // 邮件内容
-        message.setText("骚扰邮件勿回");
+        message.setText("尊敬的作者：\n\t您的论文《" + paperName + "》，已经被" + operateType + "，请及时登录系统查看！"
+                + "\n\t谢谢！");
         javaMailSender.send(message);
     }
 

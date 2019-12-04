@@ -1,6 +1,7 @@
 package com.yafeng.paperbackend.bean.vo.paper;
 
 import com.yafeng.paperbackend.bean.entity.Paper;
+import com.yafeng.paperbackend.enums.CheckStatus;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -67,15 +68,6 @@ public class PaperResponseVo {
 
     public  PaperResponseVo(Paper paper){
         BeanUtils.copyProperties(paper, this);
-        String status = "待审核";
-        switch (paper.getCheckStatus()){
-            case 0: status = "待审核"; break;
-            case 1: status = "待修改"; break;
-            case 2: status = "已通过待付款"; break;
-            case 3: status = "已付款"; break;
-            case 4: status = "已撤回"; break;
-            default: break;
-        }
-        this.setCheckStatus(status);
+        this.setCheckStatus(CheckStatus.of(paper.getCheckStatus()).getDescription());
     }
 }

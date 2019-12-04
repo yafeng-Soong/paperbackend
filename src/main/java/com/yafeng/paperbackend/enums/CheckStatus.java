@@ -21,8 +21,9 @@ public enum CheckStatus {
     TO_REVIEW("待审核", 0),
     TO_MODIFY("待修改",1),
     PASSED("已通过待付款",2),
-    PAYED("已付款", 3),
-    CANCELED("已撤销", 4);
+    PAYED("已付款待编辑发表", 3),
+    CANCELED("已撤销", 4),
+    PUBLISHED("已发表", 5);
 
     private String description;
 

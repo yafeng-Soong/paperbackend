@@ -11,6 +11,7 @@ import com.yafeng.paperbackend.enums.OperateType;
 import com.yafeng.paperbackend.enums.PayStatus;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.mapper.PaperMapper;
+import com.yafeng.paperbackend.service.EmailService;
 import com.yafeng.paperbackend.service.IPaperService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,8 @@ public class PaperServiceImpl implements IPaperService {
 
     @Autowired
     private PaperMapper paperMapper;
+    @Autowired
+    private EmailService emailService;
 
     /**
      * buildPaper
@@ -203,25 +206,30 @@ public class PaperServiceImpl implements IPaperService {
         }
         // 查询更新之前的状态
         Paper oldPaper = paperMapper.selectByPrimaryKey(vo.getPaperId());
-        // 只有待审核状态才能被操作
-        if(!CheckStatus.of(oldPaper.getCheckStatus()).equals(CheckStatus.TO_REVIEW)){
-            log.error("当前论文状态不允许您进行操作:{}", OperateType.of(vo.getType()).getDescription());
-            throw new PaperException("当前论文状态不允许您进行操作！");
-        }
-
         // 现在此论文是待审核状态
         Integer checkStatus = 0;
         OperateType operateType = OperateType.of(vo.getType());
-        // 退回操作 则论文变回待修改
-        if (operateType.equals(OperateType.RETURNED)) {
-            checkStatus = CheckStatus.TO_MODIFY.getCode();
-        }
-        //通过审核 则论文变为通过状态
-        else if (operateType.equals(OperateType.PASSED)){
-            checkStatus = CheckStatus.PASSED.getCode();
+        if(CheckStatus.of(oldPaper.getCheckStatus()).equals(CheckStatus.TO_REVIEW)) {
+            // 只有待审核发表状态才能被操作
+            // 退回操作 则论文变回待修改
+            if (operateType.equals(OperateType.RETURNED)) {
+                checkStatus = CheckStatus.TO_MODIFY.getCode();
+            }
+            //通过审核 则论文变为通过状态
+            else if (operateType.equals(OperateType.PASSED)) {
+                checkStatus = CheckStatus.PASSED.getCode();
+            } else {
+                // 否则抛出异常 因为管理员只会审核待审核的论文 结果只有退户修改或者通过
+                throw new PaperException("错误的操作，处于待审核状态的论文只能被退回或通过");
+            }
+        }else if(CheckStatus.of(oldPaper.getCheckStatus()).equals(CheckStatus.PAYED)){
+            // 待发表状态只能进行发表操作
+            if (operateType.equals(OperateType.PUBLISH))
+                checkStatus = CheckStatus.PUBLISHED.getCode();
+            else throw new PaperException("操作错误，处于待发表状态的论文只能进行发表操作！");
         }else{
-            // 否则抛出异常 因为管理员只会审核待审核的论文 结果只有退户修改或者通过
-            throw new PaperException("错误的操作");
+            log.error("当前论文状态不允许您进行操作:{}", OperateType.of(vo.getType()).getDescription());
+            throw new PaperException("当前论文状态不允许您进行操作！");
         }
         log.info("管理员：{} 对论文：{} 执行了：{} 操作 评语为:{}",
                 currentUser.getEmail(),
@@ -235,6 +243,8 @@ public class PaperServiceImpl implements IPaperService {
                 .build();
         // 只需更新论文状态和修改时间即可
         paperMapper.updateByPrimaryKeySelective(paper);
+        // 发送邮件通知投稿者
+        emailService.sendSimpleEmail(oldPaper.getPublisherEmail(), oldPaper.getName(), operateType.getDescription());
     }
 
 

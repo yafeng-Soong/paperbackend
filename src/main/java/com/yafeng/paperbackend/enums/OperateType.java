@@ -25,7 +25,8 @@ public enum OperateType {
     PAY("支付", 2),
     RETURNED("退回",3),
     PASSED("通过", 4),
-    CANCEL("撤销", 5);
+    CANCEL("撤销", 5),
+    PUBLISH("发表", 6);
 
     private String description;
 

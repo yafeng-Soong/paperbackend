@@ -11,6 +11,7 @@ import com.yafeng.paperbackend.bean.vo.admin.AdminCheckVo;
 import com.yafeng.paperbackend.bean.vo.admin.AdminQueryVo;
 import com.yafeng.paperbackend.exception.PaperException;
 import com.yafeng.paperbackend.rabbitmq.PaperMQSender;
+import com.yafeng.paperbackend.service.EmailService;
 import com.yafeng.paperbackend.service.IPaperService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +38,8 @@ public class AdminController {
     private IPaperService paperService;
 
     @Autowired
+    private EmailService emailService;
+  @Autowired
     private PaperMQSender mqsender;
 
     /**
