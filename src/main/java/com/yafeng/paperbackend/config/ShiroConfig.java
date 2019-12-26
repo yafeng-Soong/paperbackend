@@ -79,7 +79,7 @@ public class ShiroConfig {
      * @param securityManager
      * @return
      */
-    @Bean
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
