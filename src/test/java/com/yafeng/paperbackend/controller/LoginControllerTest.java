@@ -22,6 +22,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.BindingResultUtils;
 import org.springframework.web.context.WebApplicationContext;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.collections.map.HashedMap;
+import com.alibaba.fastjson.JSON;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
@@ -41,7 +45,7 @@ import static org.junit.Assert.*;
 public class LoginControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginControllerTest.class);
-//    @Resource
+    //    @Resource
 //    private RedisTemplate<String, Object> redisTemplate;
     @Autowired
     UserService userService;
@@ -58,45 +62,108 @@ public class LoginControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters((Filter) wac.getBean("shiroFilter")).build();
     }
     @Test
-    public void loginTest() throws Exception {
+    public void loginTest1() throws Exception {
         RegisterAndLoginVo user = new RegisterAndLoginVo();
-        user.setEmail("397655952@qq.com");
-        user.setPassword("gta123456");
-        String content = "{\"email\":\"397655952@qq.com\",\"password\":\"gta123456\"}";
+        user.setEmail("mahuateng@qq.com");
+        user.setPassword("");
+        String content = "{\"email\":\"mahuateng@qq.com\",\"password\":\"\"}";
         String result = mockMvc.perform(
                 MockMvcRequestBuilders.post("/login")
                         .contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn().getResponse().getContentAsString();
-        LOGGER.info(result);
+        HashMap<String, Object> hashMap=JSON.parseObject(result, HashMap.class);
+        result = (String) hashMap.get("msg");
+        assertEquals("参数错误",result);
+    }
+    @Test
+    public void loginTest2() throws Exception {
+        RegisterAndLoginVo user = new RegisterAndLoginVo();
+        user.setEmail("mahuateng4444@qq.com");
+        user.setPassword("mht1234");
+        String content = "{\"email\":\"mahuateng4444@qq.com\",\"password\":\"mht1234\"}";
+        String result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn().getResponse().getContentAsString();
+        HashMap<String, Object> hashMap=JSON.parseObject(result, HashMap.class);
+        result = (String) hashMap.get("msg");
+        assertEquals("用户不存在",result);
+    }
+    @Test
+    public void loginTest3() throws Exception {
+        RegisterAndLoginVo user = new RegisterAndLoginVo();
+        user.setEmail("397655952@qq.com");
+        user.setPassword("mht1234");
+        String content = "{\"email\":\"397655952@qq.com\",\"password\":\"mht1234\"}";
+        String result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn().getResponse().getContentAsString();
+        HashMap<String, Object> hashMap=JSON.parseObject(result, HashMap.class);
+        result = (String) hashMap.get("msg");
+        assertEquals("账号或密码错误",result);
+    }
+    @Test
+    public void loginTest4() throws Exception {
+        RegisterAndLoginVo user = new RegisterAndLoginVo();
+        user.setEmail("mahuateng@qq.com");
+        user.setPassword("mht1234");
+        String content = "{\"email\":\"mahuateng@qq.com\",\"password\":\"mht1234\"}";
+        String result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn().getResponse().getContentAsString();
+        HashMap<String, Object> hashMap=JSON.parseObject(result, HashMap.class);
+        result = (String) hashMap.get("msg");
+        assertEquals("账号暂未激活",result);
+    }
+    @Test
+    public void loginTest5() throws Exception {
+        RegisterAndLoginVo user = new RegisterAndLoginVo();
+        user.setEmail("397655952@qq.com");
+        user.setPassword("gta12345678");
+        String content = "{\"email\":\"397655952@qq.com\",\"password\":\"gta12345678\"}";
+        String result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn().getResponse().getContentAsString();
+        HashMap<String, Object> hashMap=JSON.parseObject(result, HashMap.class);
+        result = (String) hashMap.get("msg");
+        assertEquals("操作成功",result);
     }
 
-    @Test
-    public void insertUser(){
-        User user = new User();
-        user.setEmail("397655952@qq.com");
-        user.setUsername("峰酱");
-        user.setPassword("gta123456");
-        LOGGER.info("user's new password:" + user.getPassword());
-        LOGGER.info("" + userService.insert(user));
-        LOGGER.info("" + user.getId());
-    }
 
-    @Test
-    public void updateUser(){
-        User user = new User();
-        user.setEmail("397655952@qq.com");
-        user.setUsername("阿峰");
-        insertUser();
-        userService.update(user);
-    }
-
-    @Test
-    public void deleteUser(){
-        User user = new User();
-        user.setEmail("397655952@qq.com");
-        userService.delete(user);
-    }
+//    @Test
+//    public void insertUser(){
+//        User user = new User();
+//        user.setEmail("445945090@qq.com");
+//        user.setUsername("mahuateng");
+//        user.setPassword("mht1234");
+//        LOGGER.info("user's new password:" + user.getPassword());
+//        LOGGER.info("" + userService.insert(user));
+//        LOGGER.info("" + user.getId());
+//    }
+//
+//    @Test
+//    public void updateUser(){
+//        User user = new User();
+//        user.setEmail("397655952@qq.com");
+//        user.setUsername("阿峰");
+//        insertUser();
+//        userService.update(user);
+//    }
+//
+//    @Test
+//    public void deleteUser(){
+//        User user = new User();
+//        user.setEmail("397655952@qq.com");
+//        userService.delete(user);
+//    }
 
 //    @Test
 //    public void redisTest(){
